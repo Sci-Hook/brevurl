@@ -1,15 +1,28 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.poetry]
 name = "brevurl"
 version = "0.1.0"
 description = "Open source, fast and modern URL shortener"
-authors = ["Your Name <you@example.com>"]
+authors = [
+    {name = "Mehmet Emre Demir"},
+]
+maintainers = [
+  {name = "Çınar Civan", email = "cinar@scihook.org"},
+  {name = "Emirhan Gerçeker", email = "emirhan@scihook.org"}
+]
 license = "GPL-3.0"
 readme = "README.md"
+keywords = ["url", "url-shortener", "brevurl", "link-shortener", "scihook", "open-source"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[project.urls]
+Homepage = "https://opensource.scihook.org"
+Documentation = "https://opensource.scihook.org"
+Repository = "https://github.com/Sci-Hook/brevurl.git"
+"Bug Tracker" = "https://github.com/Sci-Hook/brevurl/issues"
+Changelog = "https://github.com/Sci-Hook/brevurl/blob/main/CHANGELOG.md"
