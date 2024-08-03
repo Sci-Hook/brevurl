@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "brevurl"
+version = "0.1.0"
+description = "Open source, fast and modern URL shortener"
+authors = ["Your Name <you@example.com>"]
+license = "GPL-3.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
