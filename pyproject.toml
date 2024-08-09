@@ -7,7 +7,7 @@ name = "brevurl"
 version = "0.1.0"
 description = "Open source, fast and modern URL shortener"
 authors = [
-    {name = "Mehmet Emre Demir"},
+{ name = "Mehmet Emre Demir", email = "mehmet.emre.dmr@gmail.com"},
 ]
 maintainers = [
   {name = "Çınar Civan", email = "cinar@scihook.org"},
@@ -19,6 +19,13 @@ keywords = ["url", "url-shortener", "brevurl", "link-shortener", "scihook", "ope
 
 [tool.poetry.dependencies]
 python = "^3.10"
+flask = "*" 
+firebase-admin = "*"
+flask-cors = "*"
+pyfiglet = "*"
+colorama = "*"
+
+# package versions will change 
 
 [project.urls]
 Homepage = "https://opensource.scihook.org"
