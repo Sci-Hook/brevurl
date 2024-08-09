@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <script>
+        fetch('brevurl_config.json file path')
+        //If you are testing on a local device, run test/cors.py and enter this as the path: http://localhost:8000/brevurl_config.json
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                window.sharedVariableport = data.port;
+                window.sharedVariabledomain = data.domain;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+</head>
+<body>
+    <h1>URL Shortener</h1>
+    <form id="shorten-form">
+        <label for="url">URL:</label>
+        <input type="text" id="url" name="url" required>
+        <label for="short">Short Name(Optional):</label>
+        <input type="text" id="short" name="short">
+        <button type="submit">Shorten it!</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('shorten-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const url = document.getElementById('url').value;
+            const short = document.getElementById('short').value || null;
+            const response = await fetch(`${window.sharedVariabledomain}:${window.sharedVariableport}/shorten`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ url: url, short: short }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                document.getElementById('result').innerHTML = `Short URL: <a href="${data.short_url}" target="_blank">${data.short_url}</a>`;
+            } else {
+                document.getElementById('result').textContent = `Error: ${data.error}`;
+            }
+        });
+    </script>
+</body>
+</html>
