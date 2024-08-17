@@ -5,7 +5,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import json
 
-with open('brevurl_config.json file path', 'r') as file:
+with open('brevurl_config.json dst', 'r') as file:
     brconfig = json.load(file)
 
 app = Flask(__name__)
@@ -35,7 +35,7 @@ def shorten():
     if customShort:
         doc_ref = db.collection('urls').document(customShort)
         if doc_ref.get().exists:
-            return jsonify({'error': 'Custom short URL already exists'}), 400
+            return jsonify({'error': 'Custom short name already exists'}), 400
         short_url = customShort
     else:
         short_url = shorten_url(originalUrl)

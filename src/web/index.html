@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brevurl</title>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header">
+            <p class="header-title">Brevurl</p>
+        </div>
+    </header>
+
+    <div class="main-form">
+        <h1>Brevurl</h1>
+        <form id="shorten-form" onsubmit="create_url_entry(event)">
+            <div class="input-group">
+                <div class="input-icon"><i class="fas fa-link"></i></div>
+                <input type="text" id="url" name="url" placeholder="Enter the URL you want to shorten" required>
+            </div>
+            
+            <div class="input-group with-margin">
+                <div class="input-icon"><i class="fas fa-tag"></i></div>
+                <input type="text" id="short" name="short" placeholder="Shortened name(optional)">
+            </div>
+            
+            <button type="submit" id="shorten">Shorten it!</button>
+            <br>
+            <button type="button" id="install-extension" onclick="redirectExtension()">Install Browser Extension</button>
+        </form>
+    </div>
+
+    <div id="notification" class="notification hidden">
+        <span id="notification-message"></span>
+        <button id="close-notification" class="close-btn">&times;</button>
+      </div>
+    
+</body>
+</html>
