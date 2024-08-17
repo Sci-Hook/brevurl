@@ -52,7 +52,7 @@ def main():
     print(Fore.GREEN + "Done" + Style.RESET_ALL)
 
     domain = input("Please enter the URL address where the server is located (e.g., https://example.com): ")
-    port = input("Please enter the port that the server application will use (this port will be used for routing on nginx): ")
+    port = input("Please enter the port that the server application will use (this port will be used for routing): ")
     account_available = get_user_input(
         "Would you like to activate the account system? (y/n): ",
         valid_responses={'y', 'n'}
