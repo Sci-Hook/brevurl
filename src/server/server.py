@@ -1,18 +1,22 @@
-from flask import Flask, request, jsonify, redirect
+from flask import Flask, request, jsonify, redirect, render_template
 from flask_cors import CORS
 import hashlib
 import firebase_admin
 from firebase_admin import credentials, firestore
 import json
+import os
 
-with open('brevurl_config.json dst', 'r') as file:
+current_dir = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.join(current_dir, '..', '..', 'brevurl_config.json')
+
+with open(config_path, 'r') as file:
     brconfig = json.load(file)
 
 app = Flask(__name__)
 CORS(app)
 port = brconfig["port"]
 
-#Start firabase
+# Start Firebase
 cred = credentials.Certificate(brconfig["firebase_configdst"])
 firebase_admin.initialize_app(cred)
 db = firestore.client()
@@ -23,19 +27,27 @@ def shorten_url(url):
     shortHash = hashObject.hexdigest()[:6]
     return shortHash
 
-@app.route('/shorten', methods=['POST'])
+#call brevurl_config.json
+@app.route('/config', methods=['GET'])
+def get_config():
+    return jsonify(brconfig)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/shorten', methods=['GET'])
 def shorten():
-    data = request.json
-    originalUrl = data.get('url')
-    customShort = data.get('short')
-    
+    originalUrl = request.args.get('url')
+    customShort = request.args.get('short')
+
     if not originalUrl:
-        return jsonify({'error': 'URL is required'}), 400
+        return jsonify({'err': 'URL is required'}), 400
     
     if customShort:
         doc_ref = db.collection('urls').document(customShort)
         if doc_ref.get().exists:
-            return jsonify({'error': 'Custom short name already exists'}), 400
+            return jsonify({'err': 'Custom short name already exists'}), 400
         short_url = customShort
     else:
         short_url = shorten_url(originalUrl)
@@ -44,7 +56,6 @@ def shorten():
             short_url = shorten_url(short_url + "0")
             doc_ref = db.collection('urls').document(short_url)
     
-
     db.collection('urls').document(short_url).set({
         'original_url': originalUrl
     })
@@ -63,4 +74,4 @@ def redirect_to_url(short_url):
     return redirect(original_url)
 
 if __name__ == '__main__':
-    app.run(debug=False,port=port)
+    app.run(debug=False, port=port)

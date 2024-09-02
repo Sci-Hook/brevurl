@@ -24,6 +24,7 @@ firebase-admin = "*"
 flask-cors = "*"
 pyfiglet = "*"
 colorama = "*"
+os = "*"
 
 # package versions will change 
 
