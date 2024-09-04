@@ -1,0 +1,23 @@
+	This file is an alphabetical listing of the names of everyone who
+	has contributed to the development of the Brevurl system. We would
+	like to give credit to everyone who has contributed to Brevurl so
+	far. Thank you for your efforts!
+
+	The fields are: name (N), e-mail address (E), web-address (W),
+	contribution description (D). This file was inspired by the
+	Linux Kernel's CREDITS file.
+
+----------
+
+N: Emirhan Gerçeker
+E: emirhan@scihook.org
+D: Project maintainer.
+
+N: Mehmet Emre Demir
+E: mehmet.emre.dmr@gmail.com
+D: Original system hacker.
+
+N: Çınar Civan
+E: cinar@scihook.org
+W: https://cinarcivan.com
+D: Project manager.
