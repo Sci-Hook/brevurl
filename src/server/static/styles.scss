@@ -1,348 +1,558 @@
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f8f9fa;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+  color: #212529;
+}
+
+.header {
+  background-color: #343a40;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .header-title {
+    color: #ffffff;
+    font-size: 1.5rem;
     margin: 0;
-    padding: 0;
-    color: #212529;
   }
-  
-  .header {
-    background-color: #343a40;
-    padding: 1rem;
-    text-align: center;
-  
-    .header-title {
+
+  .login-register {
+    a {
       color: #ffffff;
-      font-size: 1.5rem;
-      margin: 0;
+      text-decoration: none;
+      margin-left: 1rem;
+      font-size: 1rem;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: background-color 0.3s;
     }
-  }
-  
-  .main-form {
-    max-width: 500px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #ffffff;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    
-    h1 {
-      text-align: center;
-      margin-bottom: 2rem;
-      color: #343a40;
+
+    #login {
+      background-color: transparent;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
     }
-    
-    .input-group {
+
+    #register {
+      background-color: #007bff;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+
+
+    .user-menu {
+      position: absolute;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 10px 0;
+      top: 40px;
+      right: 0;
+      min-width: 150px;
+      z-index: 100;
+      display: none;
+
+      .menu-item {
+        padding: 10px 20px;
         display: flex;
-        align-items: center; 
-        margin-bottom: 1rem;
-      
-        &.with-margin {
-          margin-bottom: 1.5rem;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #f0f0f0;
         }
-      
-        .input-icon {
-          background-color: #343a40;
-          color: #ffffff;
-          padding: 0.5rem;
-          border-top-left-radius: 0.25rem;
-          border-bottom-left-radius: 0.25rem;
+
+        i {
+          margin-right: 10px;
+          font-size: 1.2rem;
+        }
+      }
+    }
+
+    
+    .user-menu.show {
+      display: block;
+    }
+
+
+    .username-display {
+      color: #ffffff;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 4px;
+      background-color: none;
+      display: inline-block;
+
+      &:hover {
+        color: #ccc;
+      }
+    }
+
+
+    .hidden {
+      display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .user-menu {
+        position: absolute;
+        background-color: #000000;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 10px 0;
+        top: 40px;
+        right: 0;
+        min-width: 150px;
+        z-index: 100;
+        display: none;
+  
+        .menu-item {
+          padding: 10px 20px;
           display: flex;
           align-items: center;
-          justify-content: center;
-          box-sizing: border-box; 
-          height: 2.5rem; 
-        }
-      
-        input[type="text"] {
-          flex: 1;
-          padding: 0.5rem;
-          border: 1px solid #ced4da;
-          border-top-right-radius: 0.25rem;
-          border-bottom-right-radius: 0.25rem;
-          outline: none;
-          box-shadow: none;
-          box-sizing: border-box; 
-          height: 2.5rem;
+          cursor: pointer;
+          transition: background-color 0.3s;
+  
+          &:hover {
+            background-color: #121212;
+          }
+  
+          i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+          }
         }
       }
+  
       
-    
-    button {
-      width: 100%;
-      padding: 0.75rem;
-      border-radius: 0.25rem;
-      border: none;
-      color: #ffffff;
-      font-size: 1rem;
-      
-      &#shorten {
-        background-color: #343a40;
-        margin-bottom: 1rem;
-        
+      .user-menu.show {
+        display: block;
+      }
+  
+  
+      .username-display {
+        color: #ffffff;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 4px;
+        background-color: none;
+        display: inline-block;
+  
         &:hover {
-          background-color: #495057;
+          color: #ccc;
         }
       }
-      
-      &#install-extension {
+  
+  
+      .hidden {
+        display: none;
+      }
+
+    }
+
+  }
+
+}
+
+
+
+
+.main-form {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+
+  h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #343a40;
+  }
+
+  .input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    &.with-margin {
+      margin-bottom: 1.5rem;
+    }
+
+    .input-icon {
+      background-color: #343a40;
+      color: #ffffff;
+      padding: 0.5rem;
+      border-top-left-radius: 0.25rem;
+      border-bottom-left-radius: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      height: 2.5rem;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid #ced4da;
+      border-top-right-radius: 0.25rem;
+      border-bottom-right-radius: 0.25rem;
+      outline: none;
+      box-shadow: none;
+      box-sizing: border-box;
+      height: 2.5rem;
+    }
+  }
+
+
+  button {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    border: none;
+    color: #ffffff;
+    font-size: 1rem;
+
+    &#shorten {
+      background-color: #343a40;
+      margin-bottom: 1rem;
+
+      &:hover {
+        background-color: #495057;
+      }
+    }
+
+    &#install-extension {
+      background-color: #007bff;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+
+}
+
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+
+  .header {
+    background-color: #1f1f1f;
+
+    .header-title {
+      color: #e0e0e0;
+    }
+  }
+
+  .main-form {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+
+    h1 {
+      color: #e0e0e0;
+    }
+
+    .input-group {
+      .input-icon {
+        background-color: #3a3a3a;
+      }
+
+      input[type="text"] {
+        background-color: #2a2a2a;
+        border: 1px solid #555;
+        color: #e0e0e0;
+
+        &:focus {
+          border-color: #ffffff;
+        }
+      }
+    }
+
+    button {
+      &#shorten {
         background-color: #007bff;
-        
+
         &:hover {
           background-color: #0056b3;
         }
       }
-    }
-    
-  }
-  
-  
-  @media (prefers-color-scheme: dark) {
-    body {
-      background-color: #121212;
-      color: #e0e0e0;
-    }
-  
-    .header {
-      background-color: #1f1f1f;
-  
-      .header-title {
-        color: #e0e0e0;
-      }
-    }
-  
-    .main-form {
-      background-color: #1f1f1f;
-      color: #e0e0e0;
-      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
-  
-      h1 {
-        color: #e0e0e0;
-      }
-      
-      .input-group {
-        .input-icon {
-          background-color: #3a3a3a;
-        }
-  
-        input[type="text"] {
-          background-color: #2a2a2a;
-          border: 1px solid #555;
-          color: #e0e0e0;
-  
-          &:focus {
-            border-color: #ffffff;
-          }
-        }
-      }
-      
-      button {
-        &#shorten {
-          background-color: #007bff;
-  
-          &:hover {
-            background-color: #0056b3;
-          }
-        }
-  
-        &#install-extension {
-          background-color: #495057;
-  
-          &:hover {
-            background-color: #6c757d;
-          }
-        }
-      }
-    }
-    .notification {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #007bff;
-        color: #fff;
-        padding: 1rem 1.5rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
-        font-size: 1rem;
-        z-index: 1000;
-        transition: opacity 0.5s ease, transform 0.5s ease;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      
-        &.hidden {
-          opacity: 0;
-          transform: translateY(-20px);
-          pointer-events: none;
-        }
-        
-        &.visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      
-      .close-btn {
-        background: none;
-        border: none;
-        color: #fff;
-        font-size: 1.5rem;
-        cursor: pointer;
-        padding: 0;
-        margin-left: 1rem;
-        transition: color 0.3s ease;
-      
+
+      &#install-extension {
+        background-color: #495057;
+
         &:hover {
-          color: #000000;
-        }
-    }
-    .copy-url{
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      font-size: 1.2rem;
-      margin-left: 1rem;
-      transition: color 0.3s ease;
-
-      .fa-copy{
-        color:#fff;
-        display: none;
-        
-      }
-
-      &:hover{
-        color: #000000;
-      }
-
-    }
-    
-      
-  }
-
-
-  @media (prefers-color-scheme: light) {
-    body {
-      background-color: #d3d3d3;
-      color: #333333;
-    }
-  
-    .header {
-      background-color: #1f1f1f;
-  
-      .header-title {
-        color: #e0e0e0;
-      }
-    }
-  
-    .main-form {
-      background-color: #f8f9fa;
-      color: #333333;
-      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  
-      h1 {
-        color: #333333;
-      }
-      
-      .input-group {
-        .input-icon {
-          background-color: #3a3a3a;
-        }
-  
-        input[type="text"] {
-          background-color: #ffffff;
-          border: 1px solid #ccc;
-          color: #333333;
-  
-          &:focus {
-            border-color: #000000;
-          }
-        }
-      }
-      
-      button {
-        &#shorten {
-          background-color: #007bff;
-  
-          &:hover {
-            background-color: #0056b3;
-          }
-        }
-  
-        &#install-extension {
           background-color: #6c757d;
-  
-          &:hover {
-            background-color: #5a6268;
-          }
         }
       }
     }
-  
-    .notification {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #007bff;
-      color: #fff;
-      padding: 1rem 1.5rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-      font-size: 1rem;
-      z-index: 1000;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    
-      &.hidden {
-        opacity: 0;
-        transform: translateY(-20px);
-        pointer-events: none;
-      }
-      
-      &.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .close-btn {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 0;
-      margin-left: 1rem;
-      transition: color 0.3s ease;
-    
-      &:hover {
-        color: #000000;
-      }
-    }
-    .copy-url{
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      font-size: 1.2rem;
-      margin-left: 1rem;
-      transition: color 0.3s ease;
+  }
 
-      .fa-copy{
-        color:#fff;
-        display: none;
+  .notification {
+    position: fixed;
+    bottom: 70px;
+    right: 30px;
+    background-color: #007bff;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+    
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &.hidden {
+      opacity: 0;
+      transform: translateY(-20px);
+      pointer-events: none;
+    }
+
+    &.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 1rem;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #000000;
+    }
+  }
+
+  .copy-url {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.2rem;
+    margin-left: 1rem;
+    transition: color 0.3s ease;
+    z-index: 1000;
+
+    .fa-copy {
+      color: #fff;
+      display: none;
+
+    }
+
+    &:hover {
+      color: #000000;
+    }
+
+  }
+
+  footer {
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 10;
+
+    .scicon {
+      font-size: 1.5rem;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+      text-align: center;
+
+      .scicon {
+        font-size: 1rem;
+      }
+    }
+  }
+
+
+}
+
+
+@media (prefers-color-scheme: light) {
+  body {
+    background-color: #d3d3d3;
+    color: #333333;
+  }
+
+  .header {
+    background-color: #1f1f1f;
+
+    .header-title {
+      color: #e0e0e0;
+    }
+  }
+
+  .main-form {
+    background-color: #f8f9fa;
+    color: #333333;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+
+    h1 {
+      color: #333333;
+    }
+
+    .input-group {
+      .input-icon {
+        background-color: #3a3a3a;
+      }
+
+      input[type="text"] {
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        color: #333333;
+
+        &:focus {
+          border-color: #000000;
+        }
+      }
+    }
+
+    button {
+      &#shorten {
+        background-color: #007bff;
+
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+
+      &#install-extension {
+        background-color: #6c757d;
+
+        &:hover {
+          background-color: #5a6268;
+        }
+      }
+    }
+  }
+
+  .notification {
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    background-color: #007bff;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &.hidden {
+      opacity: 0;
+      transform: translateY(-20px);
+      pointer-events: none;
+    }
+
+    &.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 1rem;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #000000;
+    }
+  }
+
+  .copy-url {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.2rem;
+    margin-left: 1rem;
+    transition: color 0.3s ease;
+
+    .fa-copy {
+      color: #fff;
+      display: none;
+
+    }
+
+    &:hover {
+      color: #000000;
+    }
+
+  }
+
+  footer {
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+
+    .scicon {
+      font-size: 1.5rem;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+      text-align: center;
+
+      .scicon {
+        font-size: 1rem;
         
       }
-
-      &:hover{
-        color: #000000;
-      }
-
     }
-    
   }
-  
 
- 
+}

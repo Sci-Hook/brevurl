@@ -1,3 +1,42 @@
+window.onload = function() {
+    const loginBtn = document.getElementById('login');
+    const registerBtn = document.getElementById('register');
+    const loginRegisterDiv = document.querySelector('.login-register');
+
+
+    const username = getCookie('username');
+    const userDisplay = document.getElementById('user-display');
+
+    if (username) {
+        loginBtn.style.display = 'none';
+        registerBtn.style.display = 'none';
+
+        userDisplay.textContent = username;
+        userDisplay.style.display = 'inline-block';
+    }
+
+    userDisplay.addEventListener('click', toggleMenu);
+};
+
+function getCookie(name) {
+    let cookieArr = document.cookie.split(";");
+
+    for (let i = 0; i < cookieArr.length; i++) {
+        let cookiePair = cookieArr[i].split("=");
+
+        if (name === cookiePair[0].trim()) {
+            return decodeURIComponent(cookiePair[1]);
+        }
+    }
+
+    return null;
+}
+
+function toggleMenu() {
+    const menu = document.getElementById('user-menu');
+    menu.classList.toggle('show');
+}
+
 async function create_url_entry(event) {
     event.preventDefault();
     try {
@@ -59,7 +98,7 @@ function showNotification(message, type = "error", copyText) {
         notification.style.backgroundColor = '#dc3545'; 
         copyUrl.querySelector('.fa-copy').style.display = 'none'; 
     } else if(type == "success"){
-        notification.style.backgroundColor = '#15BFD2'; 
+        notification.style.backgroundColor = '#2215D2FF'; 
         copyUrl.querySelector('.fa-copy').style.display = 'inline-block'; 
     }else if(type == "info"){
         notification.style.backgroundColor = '#007bff';
