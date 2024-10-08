@@ -23,3 +23,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 - cors.py file and src/web directory removed
+
+## [Unreleased]
+
+### Added
+- Login and sign-up pages have been created.
+- Login register buttons and the username and menu that will appear in case of login have been added to the index.html file.
+- Footer added to index.html file.
+- Created web_config.json file where Firebase web api information is kept.
+- Added three cookies, email username and role, to hold session information.
+
+### Changed
+- Notification toast moved up 60px to avoid conflict with footer.
+- Added a system to setup.py that checks if the web_config.json file is empty.
+- Added a route to pull web_config.json file in server py

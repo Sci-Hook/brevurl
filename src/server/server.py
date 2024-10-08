@@ -8,9 +8,13 @@ import os
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 config_path = os.path.join(current_dir, '..', '..', 'brevurl_config.json')
+config_web_path = os.path.join(current_dir, '..', '..', 'web_config.json')
 
 with open(config_path, 'r') as file:
     brconfig = json.load(file)
+    
+with open(config_web_path, 'r') as file:
+    webconfig = json.load(file)
 
 app = Flask(__name__)
 CORS(app)
@@ -32,9 +36,22 @@ def shorten_url(url):
 def get_config():
     return jsonify(brconfig)
 
+@app.route('/config-web', methods=['GET'])
+def get_web_config():
+    return jsonify(webconfig)
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
 
 @app.route('/shorten', methods=['GET'])
 def shorten():

@@ -8,15 +8,38 @@
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sci-hook/scicon@latest/style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js">
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='auth.js') }}"></script>
 
 </head>
 <body>
-    <header>
-        <div class="header">
-            <p class="header-title">Brevurl</p>
+  <header>
+    <div class="header">
+        <p class="header-title">Brevurl</p>
+        <div class="login-register">
+          <a href="{{ url_for('login') }}" id="login">Login</a>
+          <a href="{{ url_for('register') }}" id="register">Register</a>
+          <span id="user-display" class="username-display" style="display: none;"></span>
+
+          <div id="user-menu" class="user-menu hidden">
+            <div class="menu-item">
+                <i class="fas fa-user"></i> Profile
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-cog"></i> Settings
+            </div>
+            <div class="menu-item" onclick="logout()">
+                <i class="fas fa-sign-out-alt" onclick=""></i> Logout
+            </div>
         </div>
-    </header>
+        </div>
+    </div>
+</header>
 
     <div class="main-form">
         <h1>Brevurl</h1>
@@ -45,6 +68,11 @@
         <button id="close-notification" class="close-btn">&times;</button>
         
       </div>
-    
+      
+      <footer>
+        Scihook
+        <i class="scicon scicon-scihook"></i>
+
+      </footer>
 </body>
 </html>

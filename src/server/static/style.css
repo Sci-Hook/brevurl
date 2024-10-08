@@ -1,3 +1,4 @@
+@charset "UTF-8";
 body {
   font-family: "Roboto", sans-serif;
   background-color: #f8f9fa;
@@ -9,12 +10,123 @@ body {
 .header {
   background-color: #343a40;
   padding: 1rem;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .header .header-title {
   color: #ffffff;
   font-size: 1.5rem;
   margin: 0;
+}
+.header .login-register a {
+  color: #ffffff;
+  text-decoration: none;
+  margin-left: 1rem;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+.header .login-register #login {
+  background-color: transparent;
+}
+.header .login-register #login:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.header .login-register #register {
+  background-color: #007bff;
+}
+.header .login-register #register:hover {
+  background-color: #0056b3;
+}
+.header .login-register .user-menu {
+  position: absolute;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+  top: 40px;
+  right: 0;
+  min-width: 150px;
+  z-index: 100;
+  display: none;
+}
+.header .login-register .user-menu .menu-item {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.header .login-register .user-menu .menu-item:hover {
+  background-color: #f0f0f0;
+}
+.header .login-register .user-menu .menu-item i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+.header .login-register .user-menu.show {
+  display: block;
+}
+.header .login-register .username-display {
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  background-color: none;
+  display: inline-block;
+}
+.header .login-register .username-display:hover {
+  color: #ccc;
+}
+.header .login-register .hidden {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  .header .login-register .user-menu {
+    position: absolute;
+    background-color: #000000;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    top: 40px;
+    right: 0;
+    min-width: 150px;
+    z-index: 100;
+    display: none;
+  }
+  .header .login-register .user-menu .menu-item {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .header .login-register .user-menu .menu-item:hover {
+    background-color: #121212;
+  }
+  .header .login-register .user-menu .menu-item i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+  .header .login-register .user-menu.show {
+    display: block;
+  }
+  .header .login-register .username-display {
+    color: #ffffff;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: none;
+    display: inline-block;
+  }
+  .header .login-register .username-display:hover {
+    color: #ccc;
+  }
+  .header .login-register .hidden {
+    display: none;
+  }
 }
 
 .main-form {
@@ -127,15 +239,14 @@ body {
   }
   .notification {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 70px;
+    right: 30px;
     background-color: #007bff;
     color: #fff;
     padding: 1rem 1.5rem;
     border-radius: 0.5rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
     font-size: 1rem;
-    z-index: 1000;
     transition: opacity 0.5s ease, transform 0.5s ease;
     display: flex;
     align-items: center;
@@ -171,6 +282,7 @@ body {
     font-size: 1.2rem;
     margin-left: 1rem;
     transition: color 0.3s ease;
+    z-index: 1000;
   }
   .copy-url .fa-copy {
     color: #fff;
@@ -178,6 +290,38 @@ body {
   }
   .copy-url:hover {
     color: #000000;
+  }
+  footer {
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    /* Padding'in genişliği etkilememesi için */
+    z-index: 10;
+  }
+  footer .scicon {
+    font-size: 1.5rem;
+    /* İkon boyutunu ayarlayın */
+    color: #ffffff;
+    flex-shrink: 0;
+    /* İkonun küçülmesini engeller */
+  }
+}
+@media (prefers-color-scheme: dark) and (max-width: 600px) {
+  footer {
+    flex-direction: column;
+    text-align: center;
+  }
+  footer .scicon {
+    font-size: 1rem;
+    /* Küçük ekranlarda ikon boyutunu küçültün */
   }
 }
 @media (prefers-color-scheme: light) {
@@ -224,7 +368,7 @@ body {
   }
   .notification {
     position: fixed;
-    bottom: 20px;
+    top: 10px;
     right: 20px;
     background-color: #007bff;
     color: #fff;
@@ -232,7 +376,6 @@ body {
     border-radius: 0.5rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     font-size: 1rem;
-    z-index: 1000;
     transition: opacity 0.5s ease, transform 0.5s ease;
     display: flex;
     align-items: center;
@@ -275,6 +418,36 @@ body {
   }
   .copy-url:hover {
     color: #000000;
+  }
+  footer {
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    /* Padding'in genişliği etkilememesi için */
+  }
+  footer .scicon {
+    font-size: 1.5rem;
+    /* İkon boyutunu ayarlayın */
+    color: #ffffff;
+    flex-shrink: 0;
+    /* İkonun küçülmesini engeller */
+  }
+}
+@media (prefers-color-scheme: light) and (max-width: 600px) {
+  footer {
+    flex-direction: column;
+    text-align: center;
+  }
+  footer .scicon {
+    font-size: 1rem;
   }
 }
 

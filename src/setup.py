@@ -1,9 +1,12 @@
+import firebase_admin.auth
 import pyfiglet
 from colorama import Fore, Style, init
 import json
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials, firestore, auth
 import sys
+import getpass
+import os
 
 
 # Initialize colorama
@@ -26,7 +29,8 @@ def validate_firebase_config(config):
         if not value:
             print(Fore.RED + f"Empty value found for key: {key}. Please complete firebase config file." + Style.RESET_ALL)
             sys.exit()
-    
+
+
 def get_user_input(prompt, valid_responses=None):
     while True:
         user_input = input(prompt).strip().lower()
@@ -38,17 +42,23 @@ def main():
     print_ascii_art("Brevurl")
     
     brconfig_dst = input("Please enter brevurl_config.json file destination: ")
-    frconfig_dst = input("Please enter firebase_config.json file destination: ")
-    
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    config_web_dst = os.path.join(current_dir, '..', 'web_config.json')
+    frconfig_dst = os.path.join(current_dir, '..', 'firebase_config.json')
     try:
         firebase_config = read_config_file(frconfig_dst)
         brevurl_config = read_config_file(brconfig_dst)
+        web_config = read_config_file(config_web_dst)
+        
     except (FileNotFoundError, json.JSONDecodeError) as e:
         print(Fore.RED + f"Error reading configuration files: {e}" + Style.RESET_ALL)
         sys.exit()
 
     print(Fore.YELLOW + "Checking firebase config file..." + Style.RESET_ALL)
     validate_firebase_config(firebase_config)
+    print(Fore.GREEN + "Done" + Style.RESET_ALL)
+    print(Fore.YELLOW + "Checking web config file..." + Style.RESET_ALL)
+    validate_firebase_config(web_config)
     print(Fore.GREEN + "Done" + Style.RESET_ALL)
 
     domain = input("Please enter the URL address where the server is located (e.g., https://example.com): ")
@@ -58,6 +68,11 @@ def main():
         valid_responses={'y', 'n'}
     )
     account_bool = 1 if account_available == 'y' else 0
+    if account_bool == 1:
+        email = input("Enter the email for the Admin account:")
+        username = input("Enter the username for the Admin account:")
+        password = getpass.getpass("Enter the password for the admin account:")
+        
 
     print(Fore.YELLOW + "Editing the brevurl config file..." + Style.RESET_ALL)
     
@@ -72,14 +87,21 @@ def main():
     })
     
     try:
+        
         # Initialize firebase
         cred = credentials.Certificate(frconfig_dst)
         firebase_admin.initialize_app(cred)
         db = firestore.client()
         db.collection("urls").document("scihook").set({'original_url': 'https://scihook.org/'}) #create url entry
+        if account_bool == 1:
+            firebase_admin.auth.create_user(email = email, password = password)
+            db.collection("users").document(email).set({'username': username,'role':'admin'})
+            
+        
+        
         
         write_config_file(brconfig_dst, brevurl_config)
-        print(Fore.GREEN + "Successfully adjusted! If you want to make changes in the future, you can use this script or edit the config JSON files directly." + Style.RESET_ALL)
+        print(Fore.GREEN + "Successfully adjusted!🔥 If you want to make changes in the future, you can use this script or edit the config JSON files directly." + Style.RESET_ALL)
     except Exception as e:
         print(Fore.RED + f"Error: {e}" + Style.RESET_ALL)
 
