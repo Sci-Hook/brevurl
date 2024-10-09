@@ -11,13 +11,7 @@ async function initializeFirebase() {
 
 initializeFirebase();
 
-async function SignIn(event) {
-    event.preventDefault();
-    const email_element = document.getElementById('email');
-    const password_element = document.getElementById('password');
-    let email = email_element.value;
-    let password = password_element.value;
-
+async function signin(email,password){
     try {
         const signin = await auth.signInWithEmailAndPassword(email, password);
         let username = await getUsername(email);
@@ -32,8 +26,6 @@ async function SignIn(event) {
         document.cookie = "email=" + email + ";" + "expires=" + expire_date + "; path=/";
         document.cookie = "username=" + username[0] + ";" + "expires=" + expire_date + "; path=/";
         document.cookie = "role=" + username[1] + ";" + "expires=" + expire_date + "; path=/";
-        email_element.value = "";
-        password_element.value = "";
         window.location.href = '/';
     } catch (e) {
         if (e.message.includes('INVALID_LOGIN_CREDENTIALS')) {
@@ -44,10 +36,22 @@ async function SignIn(event) {
             showNotificationauth(`Auth Error: ${e.message}`, 'error-auth');
         }
 
-        email_element.value = "";
-        password_element.value = "";
+
         return;
     }
+}
+
+async function SignIn(event) {
+    event.preventDefault();
+    const email_element = document.getElementById('email');
+    const password_element = document.getElementById('password');
+    let email = email_element.value;
+    let password = password_element.value;
+    email_element.value = "";
+    password_element.value = "";
+    signin(email,password);
+
+    
 }
 
 async function Register(event) {
@@ -73,7 +77,8 @@ async function Register(event) {
             password_element.value = "";
             password_confirm_element.value = "";
             username_element.value = "";
-            window.location.href = '/login';
+            signin(email,password);
+            
 
         } else {
             console.error('Auth Error: Different passwords');
