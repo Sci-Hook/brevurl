@@ -21,7 +21,7 @@ body {
   background-color: $light-bg;
   color: $light-text;
   font-family: 'Arial', sans-serif;
-  
+
   @media (prefers-color-scheme: dark) {
     background-color: $dark-bg;
     color: $dark-text;
@@ -53,9 +53,10 @@ h2 {
   }
 }
 
-.email-group, .password-group {
+.email-group,
+.password-group {
   display: flex;
-  
+
   align-items: center;
   margin-bottom: 1rem;
   border: 1px solid $light-input-border;
@@ -63,10 +64,12 @@ h2 {
   padding: 5px;
   border-radius: 5px;
   transition: border 0.3s ease;
-  &:hover{
+
+  &:hover {
     border-color: $light-text;
   }
-  &:focus-within{
+
+  &:focus-within {
     border-color: $light-text;
   }
 
@@ -74,13 +77,15 @@ h2 {
   @media (prefers-color-scheme: dark) {
     border: 1px solid $dark-input-border;
     background-color: $dark-input-bg;
-    &:hover{
-        border-color: $hover-color;
-      }
-      &:focus-within{
-        border-color: $focus-border-color;
-      }
-    
+
+    &:hover {
+      border-color: $hover-color;
+    }
+
+    &:focus-within {
+      border-color: $focus-border-color;
+    }
+
   }
 }
 
@@ -95,7 +100,8 @@ h2 {
   }
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"],
+input[type="password"] {
   flex: 1;
   padding: 10px;
   border: none;
@@ -137,18 +143,20 @@ button[type="submit"] {
 
   .form-info-text {
     margin-top: 10px;
-    color:$light-text;
+    color: $light-text;
 
     a {
       text-decoration: none;
       color: $primary-color;
+
       &:hover {
         text-decoration: underline;
       }
     }
+
     @media (prefers-color-scheme: dark) {
-        color: $dark-text;
-      }
+      color: $dark-text;
+    }
 
 
 
@@ -156,47 +164,67 @@ button[type="submit"] {
 }
 
 .notification {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #007bff;
-    color: #fff;
-    padding: 1rem 1.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
-    font-size: 1rem;
-    z-index: 1000;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  
-    &.hidden {
-      opacity: 0;
-      transform: translateY(-20px);
-      pointer-events: none;
-    }
-    
-    &.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .close-btn {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
-    margin-left: 1rem;
-    transition: color 0.3s ease;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  z-index: 1000;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    
-  
-    &:hover {
-      color: #000000;
-    }
+  &.hidden {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+  }
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 1rem;
+  transition: color 0.3s ease;
+
+
+
+  &:hover {
+    color: #000000;
+  }
+}
+
+.send-btn {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #2c2c2c;
+  }
+
+  &.hidden {
+    display: none;
+  }
+}
+
 
