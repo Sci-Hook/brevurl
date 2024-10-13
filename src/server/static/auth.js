@@ -80,17 +80,13 @@ async function Register(event) {
                 var user = userCredential.user;
 
                 user.sendEmailVerification()
-                    .then(() => {
-                        console.log('Doğrulama e-postası gönderildi!');
-                    })
-                    .catch((error) => {
-                        console.error('E-posta gönderme hatası:', error);
-                    });
+                   
             })
                 .catch((error) => {
                     var errorCode = error.code;
                     var errorMessage = error.message;
-                    console.error('Kullanıcı kaydı hatası:', errorCode, errorMessage);
+                    showNotificationauth(`Error: ${errorMessage}`, 'error-auth')
+                    
                 });
             await db.collection("users").doc(email).set({
                 username: username,
@@ -161,7 +157,7 @@ function showNotificationauth(message, type = "error", copyText) {
                     showNotificationauth('Verification email sent!', 'success-auth');
                 })
                 .catch((error) => {
-                    showNotificationauth('Error sending email.', 'error-auth');
+                    showNotificationauth(`Error sending email: ${error}`, 'error-auth');
                 });
         }
     });
