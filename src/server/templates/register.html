@@ -14,7 +14,7 @@
     </script>
     <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-firestore.js"></script>
     <script src="{{ url_for('static', filename='auth.js') }}"></script>
-    <title>Register</title>
+    <title>Register | Brevurl</title>
 </head>
 
 <body>
@@ -52,9 +52,11 @@
 
     <div id="notification" class="notification hidden">
         <span id="notification-message"></span>
+        
+        <button id="send-email" class="send-btn hidden">Send Email</button>
         <button id="close-notification" class="close-btn">&times;</button>
-
     </div>
+    
 
 
 </body>

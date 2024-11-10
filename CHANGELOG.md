@@ -37,3 +37,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Notification toast moved up 60px to avoid conflict with footer.
 - Added a system to setup.py that checks if the web_config.json file is empty.
 - Added a route to pull web_config.json file in server py
+
+## [Unreleased]
+
+### Added
+- Email verification system added.
+- Created a toast with an option to resend the email in case the email is not verified.
+
+### Changed
+- Login is now automatic after account creation.
+- Login and register pages' titles renamed as Login/Register | Brevurl
