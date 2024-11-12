@@ -47,3 +47,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Login is now automatic after account creation.
 - Login and register pages' titles renamed as Login/Register | Brevurl
+
+## [Unreleased]
+
+### Added
+- Password reset screen added.
+- Firebase now also saves the username if logged in when a link is shortened. If not logged in, it is recorded as “Anonymous User”.
