@@ -53,6 +53,10 @@ def login():
 def register():
     return render_template('register.html')
 
+@app.route('/recover')
+def recover():
+    return render_template('recover.html')
+
 @app.route('/shorten', methods=['GET'])
 def shorten():
     originalUrl = request.args.get('url')

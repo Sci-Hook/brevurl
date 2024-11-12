@@ -6,7 +6,6 @@ async function initializeFirebase() {
     firebase.initializeApp(firebaseConfig);
     db = firebase.firestore();
     auth = firebase.auth();
-
 }
 
 initializeFirebase();
@@ -16,26 +15,25 @@ async function signin(email, password) {
         const signin = await auth.signInWithEmailAndPassword(email, password);
         let username = await getUsername(email);
         if (username == null) {
-            showNotificationauth(`Auth Error: `, 'error');
+            showNotificationauth('Auth Error: Username not found', 'error-auth');
             return;
         }
         var user = auth.currentUser;
 
-    if (user) {
-        if (user.emailVerified) {
-            showNotificationauth('Successfully signed in!', 'success-auth');
-            let now = new Date();
-            now.setMonth(now.getMonth() + 1);
-            let expire_date = now.toUTCString();
-            document.cookie = "email=" + email + ";" + "expires=" + expire_date + "; path=/";
-            document.cookie = "username=" + username[0] + ";" + "expires=" + expire_date + "; path=/";
-            document.cookie = "role=" + username[1] + ";" + "expires=" + expire_date + "; path=/";
-            window.location.href = '/';
-        } else {
-            showNotificationauth('Email is not verified', 'need-verify-auth');
+        if (user) {
+            if (user.emailVerified) {
+                showNotificationauth('Successfully signed in!', 'success-auth');
+                let now = new Date();
+                now.setMonth(now.getMonth() + 1);
+                let expire_date = now.toUTCString();
+                document.cookie = "email=" + email + ";" + "expires=" + expire_date + "; path=/";
+                document.cookie = "username=" + username[0] + ";" + "expires=" + expire_date + "; path=/";
+                document.cookie = "role=" + username[1] + ";" + "expires=" + expire_date + "; path=/";
+                window.location.href = '/';
+            } else {
+                showNotificationauth('Email is not verified', 'need-verify-auth');
+            }
         }
-    } 
-
     } catch (e) {
         if (e.message.includes('INVALID_LOGIN_CREDENTIALS')) {
             console.error('Auth Error:', e);
@@ -44,8 +42,6 @@ async function signin(email, password) {
             console.error('Auth Error:', e);
             showNotificationauth(`Auth Error: ${e.message}`, 'error-auth');
         }
-
-
         return;
     }
 }
@@ -59,8 +55,6 @@ async function SignIn(event) {
     email_element.value = "";
     password_element.value = "";
     signin(email, password);
-
-
 }
 
 async function Register(event) {
@@ -78,15 +72,12 @@ async function Register(event) {
         if (password == password_confirm) {
             await auth.createUserWithEmailAndPassword(email, password).then((userCredential) => {
                 var user = userCredential.user;
-
                 user.sendEmailVerification()
-                   
             })
                 .catch((error) => {
                     var errorCode = error.code;
                     var errorMessage = error.message;
-                    showNotificationauth(`Error: ${errorMessage}`, 'error-auth')
-                    
+                    showNotificationauth(`Error: ${errorMessage}`, 'error-auth');
                 });
             await db.collection("users").doc(email).set({
                 username: username,
@@ -98,11 +89,9 @@ async function Register(event) {
             password_confirm_element.value = "";
             username_element.value = "";
             signin(email, password);
-
-
         } else {
             console.error('Auth Error: Different passwords');
-            showNotificationauth(`Auth Error: The passwords don't match.`, 'error-auth');
+            showNotificationauth("Auth Error: The passwords don't match.", 'error-auth');
             email_element.value = "";
             password_element.value = "";
             password_confirm_element.value = "";
@@ -117,12 +106,24 @@ async function Register(event) {
         password_confirm_element.value = "";
         username_element.value = "";
         return;
-
     }
-
 }
 
-function showNotificationauth(message, type = "error", copyText) {
+
+async function Recover(event) {
+    event.preventDefault();
+    const userEmail = document.getElementById("email").value;
+    try {
+        await firebase.auth().sendPasswordResetEmail(userEmail);
+        showNotificationauth("Password reset email successfuly sent!", 'need-verify-auth');
+    } catch (error) {
+        showNotificationauth(`Error sending email: ${error.message}`, 'error-auth');
+    }
+}
+
+
+
+function showNotificationauth(message, type = "error-auth", copyText) {
     const notification = document.getElementById('notification');
     const notificationMessage = document.getElementById('notification-message');
     const closeBtn = document.getElementById('close-notification');
@@ -132,15 +133,14 @@ function showNotificationauth(message, type = "error", copyText) {
 
     if (type === "error-auth") {
         notification.style.backgroundColor = '#dc3545';
-        sendEmailBtn.classList.add('hidden'); 
+        sendEmailBtn.classList.add('hidden');
     } else if (type === "need-verify-auth") {
         notification.style.backgroundColor = '#15BFD2';
-        sendEmailBtn.classList.remove('hidden'); 
+        sendEmailBtn.classList.remove('hidden');
     } else if (type === "success-auth") {
         notification.style.backgroundColor = '#10EA34';
-        sendEmailBtn.classList.add('hidden'); 
+        sendEmailBtn.classList.add('hidden');
     }
-
     notification.classList.remove('hidden');
     notification.classList.add('visible');
 
@@ -150,15 +150,19 @@ function showNotificationauth(message, type = "error", copyText) {
     });
 
     sendEmailBtn.addEventListener('click', () => {
-        var user = auth.currentUser;
-        if (user) {
-            user.sendEmailVerification()
-                .then(() => {
-                    showNotificationauth('Verification email sent!', 'success-auth');
-                })
-                .catch((error) => {
-                    showNotificationauth(`Error sending email: ${error}`, 'error-auth');
-                });
+        if (document.title == "Recover Account | Brevurl") {
+            window.location.href = '/login';
+        } else {
+            var user = auth.currentUser;
+            if (user) {
+                user.sendEmailVerification()
+                    .then(() => {
+                        showNotificationauth('Verification email sent!', 'success-auth');
+                    })
+                    .catch((error) => {
+                        showNotificationauth(`Error sending email: ${error}`, 'error-auth');
+                    });
+            }
         }
     });
 }
@@ -166,7 +170,6 @@ function showNotificationauth(message, type = "error", copyText) {
 async function getUsername(email) {
     const docRef = await db.collection("users").doc(email);
     const docSnap = await docRef.get();
-
     if (docSnap.exists) {
         const data = docSnap.data();
         return [data["username"], data["role"]];
@@ -175,9 +178,6 @@ async function getUsername(email) {
         return null;
     }
 }
-
-
-
 
 function logout() {
     firebase.auth().signOut().then(() => {
@@ -189,7 +189,6 @@ function logout() {
         console.error('Error signing out: ', error);
     });
 }
-
 
 function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
