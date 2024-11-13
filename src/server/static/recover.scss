@@ -1,0 +1,230 @@
+// SCSS Styling for Light and Dark Theme with Updated Input Fields
+
+// Variables for colors
+$dark-bg: #1d1d1d;
+$dark-text: #e0e0e0;
+$dark-border: #333;
+$dark-input-bg: #2c2c2c;
+$dark-input-border: #444;
+$light-bg: #d3d3d3;
+$light-text: #000000;
+$light-border: #ccc;
+$light-input-bg: #fff;
+$light-input-border: #ccc;
+$primary-color: #007bff;
+$hover-color: #ccc;
+$focus-border-color: #fff;
+$button-hover : #495057;
+
+
+body {
+  background-color: $light-bg;
+  color: $light-text;
+  font-family: 'Arial', sans-serif;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $dark-bg;
+    color: $dark-text;
+  }
+}
+
+.login-form {
+  width: 350px;
+  margin: 100px auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border: 1px solid $light-border;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $dark-bg;
+    border: 1px solid $dark-border;
+  }
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: $light-text;
+
+  @media (prefers-color-scheme: dark) {
+    color: $dark-text;
+  }
+}
+
+.email-group,
+.password-group {
+  display: flex;
+
+  align-items: center;
+  margin-bottom: 1rem;
+  border: 1px solid $light-input-border;
+  background-color: $light-input-bg;
+  padding: 5px;
+  border-radius: 5px;
+  transition: border 0.3s ease;
+
+  &:hover {
+    border-color: $light-text;
+  }
+
+  &:focus-within {
+    border-color: $light-text;
+  }
+
+
+  @media (prefers-color-scheme: dark) {
+    border: 1px solid $dark-input-border;
+    background-color: $dark-input-bg;
+
+    &:hover {
+      border-color: $hover-color;
+    }
+
+    &:focus-within {
+      border-color: $focus-border-color;
+    }
+
+  }
+}
+
+.input-icon {
+  display: inline-block;
+  width: 30px;
+  text-align: center;
+  color: $light-text;
+
+  @media (prefers-color-scheme: dark) {
+    color: $dark-text;
+  }
+}
+
+input[type="text"],
+input[type="password"] {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: $light-text;
+
+  @media (prefers-color-scheme: dark) {
+    color: $dark-text;
+  }
+
+  &::placeholder {
+    color: $light-text;
+
+    @media (prefers-color-scheme: dark) {
+      color: $dark-text;
+    }
+  }
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: $primary-color;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: $button-hover;
+  }
+}
+
+.group {
+  margin-top: 15px;
+  text-align: center;
+
+  .form-info-text {
+    margin-top: 10px;
+    color: $light-text;
+
+    a {
+      text-decoration: none;
+      color: $primary-color;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      color: $dark-text;
+    }
+
+
+
+  }
+}
+
+.notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  z-index: 1000;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &.hidden {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+  }
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 1rem;
+  transition: color 0.3s ease;
+
+
+
+  &:hover {
+    color: #000000;
+  }
+}
+
+.send-btn {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #2c2c2c;
+  }
+
+  &.hidden {
+    display: none;
+  }
+}
+
+

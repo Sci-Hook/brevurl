@@ -53,10 +53,15 @@ def login():
 def register():
     return render_template('register.html')
 
+@app.route('/recover')
+def recover():
+    return render_template('recover.html')
+
 @app.route('/shorten', methods=['GET'])
 def shorten():
     originalUrl = request.args.get('url')
     customShort = request.args.get('short')
+    user = request.args.get('user')
 
     if not originalUrl:
         return jsonify({'err': 'URL is required'}), 400
@@ -74,7 +79,8 @@ def shorten():
             doc_ref = db.collection('urls').document(short_url)
     
     db.collection('urls').document(short_url).set({
-        'original_url': originalUrl
+        'original_url': originalUrl,
+        'user': user
     })
     
     return jsonify({'short_url': f'{brconfig["domain"]}:{port}/{short_url}'}), 200

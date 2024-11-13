@@ -64,6 +64,13 @@ async function create_url_entry(event) {
         if (short) {
             requestUrl += `&short=${encodeURIComponent(short)}`;
         }
+        let username = getCookie('username');
+        if(username){
+            requestUrl += `&user=${encodeURIComponent(username)}`;
+        }else{
+            username = "Anonymous User";
+            requestUrl += `&user=${encodeURIComponent(username)}`;
+        }
 
         const getResponse = await fetch(requestUrl, {
             method: 'GET'

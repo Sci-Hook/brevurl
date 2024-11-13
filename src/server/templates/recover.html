@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='recover.css') }}">
     <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js">
     </script>
 
@@ -13,41 +13,27 @@
     </script>
     <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-firestore.js"></script>
     <script src="{{ url_for('static', filename='auth.js') }}"></script>
-    <title>Login | Brevurl</title>
+    <title>Recover Account | Brevurl</title>
 </head>
 
 <body>
 
     <div class="login-form">
-        <h2>Login to your Brevurl account</h2>
-        <form onsubmit="SignIn(event)">
+        <h2>Recover your Brevurl account</h2>
+        <form onsubmit="Recover(event)">
             <div class="email-group">
                 <div class="input-icon"><i class="fas fa-envelope"></i></div>
                 <input type="text" id="email" name="email" placeholder="Email" required>
             </div>
-            <div class="password-group">
-                <div class="input-icon"><i class="fas fa-key"></i></div>
-                <input type="password" id="password" name="password" placeholder="Password" required>
-            </div>
-
-
-            <button type="submit">Login</button>
+            <button type="submit">Send Password Reset Email</button>
 
         </form>
-        <div class="group">
-            <div class="form-info-text">
-                Don't have a Brevurl account? <a class='brevurl-link' href="{{ url_for('register') }}">Create</a> an account.
-            </div>
-            <div class="form-info-text">
-                Can't access your account? <a class='brevurl-link' href="{{ url_for('recover') }}">Recover your account.</a>
-            </div>
-        </div>
     </div>
 
     <div id="notification" class="notification hidden">
         <span id="notification-message"></span>
         
-        <button id="send-email" class="send-btn hidden">Send Email</button>
+        <button id="send-email" class="send-btn hidden">Go Login Page</button>
         <button id="close-notification" class="close-btn">&times;</button>
     </div>
     
