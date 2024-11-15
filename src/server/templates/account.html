@@ -13,6 +13,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-firestore.js"></script>
     <script src="{{ url_for('static', filename='account.js') }}"></script>
     <script src="{{ url_for('static', filename='auth.js') }}"></script>
 
@@ -46,7 +47,24 @@
         </div>
         <main class="content">
             <section class="section" id="links">
-                My Links
+                <div id="links">
+                    <div class="link-item">
+                        <div>
+                            <strong>Document:</strong> document_id <br>
+                            <strong>Original URL:</strong>
+                            <a href="original_url" target="_blank">original_url</a>
+                        </div>
+                        <div class="button-container">
+                            <button class="copy-button" onclick="copyLink(`${doc.id}`,this)">
+                                <i class="fa fa-copy"></i>
+                            </button>
+                            <button class="delete-button" onclick="deleteLink(`${doc.id}`, this)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
             </section>
             <section class="section" id="account-settings">
                 Account Settings
