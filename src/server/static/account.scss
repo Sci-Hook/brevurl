@@ -84,7 +84,7 @@ body {
             padding: 0.5rem;
             border-radius: 4px;
             display: inline-block;
-            max-width: 150px; 
+            max-width: 150px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -162,7 +162,7 @@ body {
 
 .main-form {
     display: flex;
-    padding-top: 4rem; 
+    padding-top: 4rem;
     min-height: calc(100vh - 8rem);
 
     .sidebar {
@@ -212,6 +212,100 @@ body {
         color: $light-text;
         width: calc(100% - #{$sidebar-width});
 
+        
+
+        .link-item {
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+        }
+
+        .link-item strong {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .link-item a {
+            font-size: 16px;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .link-item a:hover {
+            text-decoration: underline;
+        }
+        .button-container {
+            display: flex;
+            gap: 8px; 
+            margin-left: auto; 
+          }
+        .delete-button {
+            background-color: #e74c3c; 
+            color: #fff; 
+            border: none; 
+            border-radius: 8px; 
+            padding: 8px; 
+            cursor: pointer; 
+            transition: background-color 0.3s, transform 0.3s; 
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+          }
+          
+          .delete-button:hover {
+            background-color: #c0392b; 
+          }
+          
+          .delete-button .fa {
+            font-size: 18px; 
+          }
+          
+          .delete-button.success {
+            background-color: #2ecc71;
+          }
+
+          .copy-button {
+            background-color: $primary-color;
+            color: #fff; 
+            border: none; 
+            border-radius: 8px; 
+            padding: 8px; 
+            cursor: pointer; 
+            transition: background-color 0.3s, transform 0.3s; 
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+          }
+          
+          .copy-button:hover {
+            background-color: #0d3879;
+          }
+          
+          .copy-button .fa {
+            font-size: 18px; 
+          }
+          
+          .copy-button.success {
+            background-color: #2ecc71; 
+          }
+          
+        @media (prefers-color-scheme: dark) {
+            .link-item {
+                background-color: #1f1f1f;
+            }
+
+
+
+
+
+
+        }
 
     }
 

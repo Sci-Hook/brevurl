@@ -62,3 +62,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - The design of the text boxes on the home page has been harmonized with other pages.
+
+## [Unreleased]
+
+### Added
+- My Links page has been created.
