@@ -26,9 +26,9 @@
           <a href="{{ url_for('register') }}" id="register">Register</a>
           <span id="user-display" class="username-display" style="display: none;"></span>
 
-          <div id="user-menu" class="user-menu hidden">
-            <div class="menu-item">
-                <i class="fas fa-user"></i> Manage Account
+          <div id="user-menu" class="user-menu hidden" >
+            <div class="menu-item" onclick="window.location.href = '/account';">
+                <i class="fas fa-user" ></i>Account
             </div>
             <div class="menu-item" onclick="logout()">
                 <i class="fas fa-sign-out-alt" onclick=""></i> Logout

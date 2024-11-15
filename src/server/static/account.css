@@ -1,0 +1,226 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #d3d3d3;
+  color: #000000;
+  min-height: 100vh;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1d1d1d;
+    color: #e0e0e0;
+  }
+}
+
+.header {
+  background-color: #343a40;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 10;
+}
+.header .header-title {
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin: 0;
+}
+.header .user {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.header .user .user-menu {
+  position: absolute;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+  top: 40px;
+  right: 0;
+  min-width: 150px;
+  z-index: 100;
+  display: none;
+}
+.header .user .user-menu .menu-item {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.header .user .user-menu .menu-item:hover {
+  background-color: #f0f0f0;
+}
+.header .user .user-menu .menu-item i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+.header .user .user-menu.show {
+  display: block;
+}
+.header .user .username-display {
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.header .user .username-display:hover {
+  color: #ccc;
+}
+.header .user .hidden {
+  display: none;
+}
+@media (prefers-color-scheme: dark) and (prefers-color-scheme: dark) {
+  .header .user .user-menu {
+    position: absolute;
+    background-color: #000000;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    top: 40px;
+    right: 0;
+    min-width: 150px;
+    z-index: 100;
+    display: none;
+  }
+  .header .user .user-menu .menu-item {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .header .user .user-menu .menu-item:hover {
+    background-color: #121212;
+  }
+  .header .user .user-menu .menu-item i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+  .header .user .user-menu.show {
+    display: block;
+  }
+  .header .user .username-display {
+    color: #ffffff;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: none;
+    display: inline-block;
+  }
+  .header .user .username-display:hover {
+    color: #ccc;
+  }
+  .header .user .hidden {
+    display: none;
+  }
+}
+
+.main-form {
+  display: flex;
+  padding-top: 4rem;
+  min-height: calc(100vh - 8rem);
+}
+.main-form .sidebar {
+  width: 220px;
+  padding: 1rem;
+  background-color: #d3d3d3;
+  color: #000000;
+  height: 100%;
+  position: fixed;
+}
+.main-form .sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+.main-form .sidebar ul li {
+  padding: 0.75rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  color: #000000;
+  transition: background-color 0.3s, color 0.3s;
+}
+.main-form .sidebar ul li i {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+}
+.main-form .sidebar ul li:hover {
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.main-form .sidebar ul li.selected {
+  background-color: #104494;
+  border-radius: 10px;
+}
+.main-form .content {
+  margin-left: 220px;
+  padding: 2rem;
+  background-color: #d3d3d3;
+  color: #000000;
+  width: calc(100% - 220px);
+}
+@media (prefers-color-scheme: dark) {
+  .main-form .header,
+  .main-form .sidebar {
+    background-color: #1d1d1d;
+  }
+  .main-form .sidebar ul li {
+    color: #e0e0e0;
+  }
+  .main-form .sidebar ul li:hover {
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  .main-form .sidebar ul li.selected {
+    background-color: #104494;
+    border-radius: 10px;
+  }
+  .main-form .content {
+    background-color: #1d1d1d;
+    color: #e0e0e0;
+  }
+}
+
+footer {
+  background-color: #343a40;
+  color: #ffffff;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 10;
+}
+footer .scicon {
+  font-size: 1.5rem;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+@media (max-width: 600px) {
+  footer {
+    flex-direction: column;
+    text-align: center;
+  }
+  footer .scicon {
+    font-size: 1rem;
+  }
+}
+
+/*# sourceMappingURL=account.css.map */
