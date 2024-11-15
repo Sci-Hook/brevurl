@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account | Brevurl</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='account.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sci-hook/scicon@latest/style.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>
+    <script src="{{ url_for('static', filename='account.js') }}"></script>
+    <script src="{{ url_for('static', filename='auth.js') }}"></script>
+
+
+</head>
+
+<body>
+    <header>
+        <div class="header">
+            <p class="header-title" onclick="window.location.href = '/';">Brevurl</p>
+            <div class="user">
+                <span id="user-display" class="username-display" style="display: none;"></span>
+                <div id="user-menu" class="user-menu hidden">
+                    <div class="menu-item" onclick="window.location.href = '/';">
+                        <i class="fas fa-home"></i> Return to home page
+                    </div>
+                    <div class="menu-item" onclick="logout()">
+                        <i class="fas fa-sign-out-alt" onclick=""></i> Logout
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <div class="main-form">
+        <div class="sidebar">
+            <ul>
+                <li><i class="fa fa-link"></i>My Links</li>
+                <li><i class="fa fa-cog"></i>Account Settings</li>
+            </ul>
+        </div>
+        <main class="content">
+            <section class="section" id="links">
+                My Links
+            </section>
+            <section class="section" id="account-settings">
+                Account Settings
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        Scihook
+        <i class="scicon scicon-scihook"></i>
+    </footer>
+</body>
+
+</html>

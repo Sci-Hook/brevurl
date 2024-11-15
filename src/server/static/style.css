@@ -1,10 +1,15 @@
-@charset "UTF-8";
 body {
   font-family: "Roboto", sans-serif;
-  background-color: #f8f9fa;
+  background-color: #d3d3d3;
   margin: 0;
   padding: 0;
-  color: #212529;
+  color: #000000;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1d1d1d;
+    color: #e0e0e0;
+  }
 }
 
 .header {
@@ -74,7 +79,6 @@ body {
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 4px;
-  background-color: none;
   display: inline-block;
 }
 .header .login-register .username-display:hover {
@@ -83,7 +87,7 @@ body {
 .header .login-register .hidden {
   display: none;
 }
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) and (prefers-color-scheme: dark) {
   .header .login-register .user-menu {
     position: absolute;
     background-color: #000000;
@@ -146,32 +150,31 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  transition: border 0.3s ease;
 }
-.main-form .input-group.with-margin {
-  margin-bottom: 1.5rem;
+.main-form .input-group:hover {
+  border-color: #000000;
+}
+.main-form .input-group:focus-within {
+  border-color: #000000;
 }
 .main-form .input-group .input-icon {
-  background-color: #343a40;
-  color: #ffffff;
-  padding: 0.5rem;
-  border-top-left-radius: 0.25rem;
-  border-bottom-left-radius: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  height: 2.5rem;
+  display: inline-block;
+  width: 30px;
+  text-align: center;
+  color: #000000;
 }
 .main-form .input-group input[type=text] {
   flex: 1;
-  padding: 0.5rem;
-  border: 1px solid #ced4da;
-  border-top-right-radius: 0.25rem;
-  border-bottom-right-radius: 0.25rem;
+  padding: 10px;
+  border: none;
   outline: none;
-  box-shadow: none;
-  box-sizing: border-box;
-  height: 2.5rem;
+  background-color: transparent;
+  color: #000000;
 }
 .main-form button {
   width: 100%;
@@ -214,234 +217,108 @@ body {
   .main-form h1 {
     color: #e0e0e0;
   }
+  .main-form .input-group {
+    border: 1px solid #444;
+    background-color: #2c2c2c;
+  }
+  .main-form .input-group:hover {
+    border-color: #e0e0e0;
+  }
+  .main-form .input-group:focus-within {
+    border-color: #fff;
+  }
   .main-form .input-group .input-icon {
-    background-color: #3a3a3a;
-  }
-  .main-form .input-group input[type=text] {
-    background-color: #2a2a2a;
-    border: 1px solid #555;
-    color: #e0e0e0;
-  }
-  .main-form .input-group input[type=text]:focus {
-    border-color: #ffffff;
-  }
-  .main-form button#shorten {
-    background-color: #007bff;
-  }
-  .main-form button#shorten:hover {
-    background-color: #0056b3;
-  }
-  .main-form button#install-extension {
-    background-color: #495057;
-  }
-  .main-form button#install-extension:hover {
-    background-color: #6c757d;
-  }
-  .notification {
-    position: fixed;
-    bottom: 70px;
-    right: 30px;
-    background-color: #007bff;
-    color: #fff;
-    padding: 1rem 1.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
-    font-size: 1rem;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .notification.hidden {
-    opacity: 0;
-    transform: translateY(-20px);
-    pointer-events: none;
-  }
-  .notification.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .close-btn {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
-    margin-left: 1rem;
-    transition: color 0.3s ease;
-  }
-  .close-btn:hover {
-    color: #000000;
-  }
-  .copy-url {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    font-size: 1.2rem;
-    margin-left: 1rem;
-    transition: color 0.3s ease;
-    z-index: 1000;
-  }
-  .copy-url .fa-copy {
-    color: #fff;
-    display: none;
-  }
-  .copy-url:hover {
-    color: #000000;
-  }
-  footer {
-    background-color: #343a40;
-    color: #ffffff;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    box-sizing: border-box;
-    /* Padding'in genişliği etkilememesi için */
-    z-index: 10;
-  }
-  footer .scicon {
-    font-size: 1.5rem;
-    /* İkon boyutunu ayarlayın */
-    color: #ffffff;
-    flex-shrink: 0;
-    /* İkonun küçülmesini engeller */
-  }
-}
-@media (prefers-color-scheme: dark) and (max-width: 600px) {
-  footer {
-    flex-direction: column;
+    display: inline-block;
+    width: 30px;
     text-align: center;
-  }
-  footer .scicon {
-    font-size: 1rem;
-    /* Küçük ekranlarda ikon boyutunu küçültün */
-  }
-}
-@media (prefers-color-scheme: light) {
-  body {
-    background-color: #d3d3d3;
-    color: #333333;
-  }
-  .header {
-    background-color: #1f1f1f;
-  }
-  .header .header-title {
     color: #e0e0e0;
   }
-  .main-form {
-    background-color: #f8f9fa;
-    color: #333333;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  }
-  .main-form h1 {
-    color: #333333;
-  }
-  .main-form .input-group .input-icon {
-    background-color: #3a3a3a;
-  }
   .main-form .input-group input[type=text] {
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    color: #333333;
-  }
-  .main-form .input-group input[type=text]:focus {
-    border-color: #000000;
-  }
-  .main-form button#shorten {
-    background-color: #007bff;
-  }
-  .main-form button#shorten:hover {
-    background-color: #0056b3;
-  }
-  .main-form button#install-extension {
-    background-color: #6c757d;
-  }
-  .main-form button#install-extension:hover {
-    background-color: #5a6268;
-  }
-  .notification {
-    position: fixed;
-    top: 10px;
-    right: 20px;
-    background-color: #007bff;
-    color: #fff;
-    padding: 1rem 1.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    font-size: 1rem;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .notification.hidden {
-    opacity: 0;
-    transform: translateY(-20px);
-    pointer-events: none;
-  }
-  .notification.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .close-btn {
-    background: none;
+    flex: 1;
+    padding: 10px;
     border: none;
-    color: #fff;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
-    margin-left: 1rem;
-    transition: color 0.3s ease;
-  }
-  .close-btn:hover {
-    color: #000000;
-  }
-  .copy-url {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    font-size: 1.2rem;
-    margin-left: 1rem;
-    transition: color 0.3s ease;
-  }
-  .copy-url .fa-copy {
-    color: #fff;
-    display: none;
-  }
-  .copy-url:hover {
-    color: #000000;
-  }
-  footer {
-    background-color: #343a40;
-    color: #ffffff;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    box-sizing: border-box;
-    /* Padding'in genişliği etkilememesi için */
-  }
-  footer .scicon {
-    font-size: 1.5rem;
-    /* İkon boyutunu ayarlayın */
-    color: #ffffff;
-    flex-shrink: 0;
-    /* İkonun küçülmesini engeller */
+    outline: none;
+    background-color: transparent;
+    color: #e0e0e0;
   }
 }
-@media (prefers-color-scheme: light) and (max-width: 600px) {
+.notification {
+  position: fixed;
+  bottom: 70px;
+  right: 30px;
+  background-color: #007bff;
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.notification.hidden {
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
+}
+.notification.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 1rem;
+  transition: color 0.3s ease;
+}
+.close-btn:hover {
+  color: #000000;
+}
+
+.copy-url {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1.2rem;
+  margin-left: 1rem;
+  transition: color 0.3s ease;
+  z-index: 1000;
+}
+.copy-url .fa-copy {
+  color: #fff;
+  display: none;
+}
+.copy-url:hover {
+  color: #000000;
+}
+
+footer {
+  background-color: #343a40;
+  color: #ffffff;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 10;
+}
+footer .scicon {
+  font-size: 1.5rem;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+@media (max-width: 600px) {
   footer {
     flex-direction: column;
     text-align: center;

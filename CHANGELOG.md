@@ -53,3 +53,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Password reset screen added.
 - Firebase now also saves the username if logged in when a link is shortened. If not logged in, it is recorded as “Anonymous User”.
+
+
+## [Unreleased]
+
+### Added
+- The template of the "Account" page where the account settings will be found with the links created by the user has been created.
+
+### Changed
+- The design of the text boxes on the home page has been harmonized with other pages.
