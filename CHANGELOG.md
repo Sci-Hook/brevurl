@@ -67,3 +67,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - My Links page has been created.
+
+## [Unreleased]
+
+### Added
+- "Account Settings" page created.
+- Password reset feature added.

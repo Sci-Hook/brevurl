@@ -246,6 +246,146 @@ body {
     background-color: #1f1f1f;
   }
 }
+.main-form .content .reset-password {
+  background-color: transparent;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  .main-form .content .reset-password {
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+  }
+}
+.main-form .content .reset-password .input-icon {
+  display: inline-block;
+  width: 30px;
+  text-align: center;
+  color: #000000;
+}
+@media (prefers-color-scheme: dark) {
+  .main-form .content .reset-password .input-icon {
+    color: #e0e0e0;
+  }
+}
+.main-form .content .reset-password .text-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  transition: border 0.3s ease;
+}
+.main-form .content .reset-password .text-group:hover {
+  border-color: #000000;
+}
+.main-form .content .reset-password .text-group:focus-within {
+  border-color: #000000;
+}
+@media (prefers-color-scheme: dark) {
+  .main-form .content .reset-password .text-group {
+    border: 1px solid #444;
+    background-color: #2c2c2c;
+  }
+  .main-form .content .reset-password .text-group:hover {
+    border-color: #ccc;
+  }
+  .main-form .content .reset-password .text-group:focus-within {
+    border-color: #fff;
+  }
+}
+.main-form .content .reset-password .text-group input[type=password] {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #000000;
+}
+@media (prefers-color-scheme: dark) {
+  .main-form .content .reset-password .text-group input[type=password] {
+    color: #e0e0e0;
+  }
+}
+.main-form .content .reset-password .text-group input[type=password]::placeholder {
+  color: #000000;
+}
+@media (prefers-color-scheme: dark) {
+  .main-form .content .reset-password .text-group input[type=password]::placeholder {
+    color: #e0e0e0;
+  }
+}
+.main-form .content .reset-password button[type=submit] {
+  width: 100%;
+  padding: 10px;
+  background-color: #104494;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.main-form .content .reset-password button[type=submit]:hover {
+  background-color: #495057;
+}
+.main-form .content .notification {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  background-color: #007bff;
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  z-index: 1000;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.main-form .content .notification.hidden {
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
+}
+.main-form .content .notification.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.main-form .content .close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 1rem;
+  transition: color 0.3s ease;
+}
+.main-form .content .close-btn:hover {
+  color: #000000;
+}
+.main-form .content .send-btn {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: background-color 0.3s ease;
+}
+.main-form .content .send-btn:hover {
+  background-color: #2c2c2c;
+}
+.main-form .content .send-btn.hidden {
+  display: none;
+}
 @media (prefers-color-scheme: dark) {
   .main-form .header,
   .main-form .sidebar {
