@@ -67,7 +67,31 @@
 
             </section>
             <section class="section" id="account-settings">
-                Account Settings
+               <form onsubmit="resetPassword(event)">
+                <div class="reset-password">
+                    <div class="text-group">
+                        <div class="input-icon"><i class="fas fa-key"></i></div>
+                        <input type="password" id="current-password" name="current-password" placeholder="Password" required>
+                    </div>
+                    <div class="text-group">
+                        <div class="input-icon"><i class="fas fa-key"></i></div>
+                        <input type="password" id="new-password" name="new-password" placeholder=" New Password" required>
+                        
+                    </div>
+                    <div class="text-group">
+                        
+                        <div class="input-icon"><i class="fas fa-key"></i></div>
+                        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm New Password" required>
+                    </div>
+                    <button type="submit">Reset Password</button>
+                </div>
+               </form>
+               <div id="notification" class="notification hidden">
+                <span id="notification-message"></span>
+                
+                <button id="send-email" class="send-btn hidden">Send Email</button>
+                <button id="close-notification" class="close-btn">&times;</button>
+            </div>
             </section>
         </main>
     </div>

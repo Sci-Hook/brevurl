@@ -190,6 +190,95 @@ function logout() {
     });
 }
 
+function resetPassword(event) {
+    event.preventDefault();
+    const current_password_element = document.getElementById('current-password');
+    const password_element = document.getElementById('new-password');
+    const password_control_element = document.getElementById('confirm-password');
+    let new_password = password_element.value;
+    let password_control = password_control_element.value;
+    let current_password = current_password_element.value;
+
+
+
+    const user = auth.currentUser;
+    const email = getCookie("email");
+
+    if (user) {
+        const credential = firebase.auth.EmailAuthProvider.credential(email, current_password);
+
+        user.reauthenticateWithCredential(credential)
+            .then(() => {
+
+                if (new_password == password_control) {
+                    if (new_password != current_password) {
+                        user.updatePassword(new_password)
+                            .then(() => {
+                                password_element.value = "";
+                                password_control_element.value = "";
+                                current_password_element.value = "";
+                                showNotificationauth("Your password updated successfuly", "success-auth");
+                            })
+                            .catch((error) => {
+                                password_element.value = "";
+                                password_control_element.value = "";
+                                current_password_element.value = "";
+                                showNotificationauth(`Error: ${error.message}`, "error-auth");
+
+                            });
+
+                    } else {
+                        password_element.value = "";
+                        password_control_element.value = "";
+                        current_password_element.value = "";
+                        showNotificationauth("Your password cannot be the same as before", "error-auth");
+
+                    }
+                } else {
+                    password_element.value = "";
+                    password_control_element.value = "";
+                    current_password_element.value = "";
+                    showNotificationauth("Passwords dont match", "error-auth");
+
+                }
+
+
+            })
+            .catch((e) => {
+                password_element.value = "";
+                password_control_element.value = "";
+                current_password_element.value = "";
+                if (e.message.includes('INVALID_LOGIN_CREDENTIALS')) {
+                    showNotificationauth("Your current password is incorrect", "error-auth")
+                } else {
+                    showNotificationauth(`Error: ${e.message}`, "error-auth");
+                }
+
+            });
+    } else {
+        password_element.value = "";
+        password_control_element.value = "";
+        current_password_element.value = "";
+        showNotificationauth("Auth Error. Please relogin", "error-auth");
+    }
+
+}
+
 function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
+
+function getCookie(name) {
+    let cookieArr = document.cookie.split(";");
+
+    for (let i = 0; i < cookieArr.length; i++) {
+        let cookiePair = cookieArr[i].split("=");
+
+        if (name === cookiePair[0].trim()) {
+            return decodeURIComponent(cookiePair[1]);
+        }
+    }
+
+    return null;
+}
+
