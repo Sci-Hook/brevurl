@@ -1,10 +1,12 @@
 window.onload = function() {
     const loginBtn = document.getElementById('login');
     const registerBtn = document.getElementById('register');
+    const adminPanel = document.getElementById('menu-item-admin');
     const loginRegisterDiv = document.querySelector('.login-register');
 
 
     const username = getCookie('username');
+    const role = getCookie('role');
     const userDisplay = document.getElementById('user-display');
 
     if (username) {
@@ -13,6 +15,12 @@ window.onload = function() {
 
         userDisplay.textContent = username;
         userDisplay.style.display = 'inline-block';
+
+        if (role == 'admin') {
+            adminPanel.style.display = 'inline-block';
+
+            
+        }
     }
 
     userDisplay.addEventListener('click', toggleMenu);

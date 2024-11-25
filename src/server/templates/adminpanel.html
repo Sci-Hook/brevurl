@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Brevurl</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='adminpanel.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sci-hook/scicon@latest/style.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-firestore.js"></script>
+    <script src="{{ url_for('static', filename='adminpanel.js') }}"></script>
+    <script src="{{ url_for('static', filename='auth.js') }}"></script>
+
+
+</head>
+
+<body>
+    <header>
+        <div class="header">
+            <p class="header-title" onclick="window.location.href = '/';">Brevurl</p>
+            <div class="user">
+                <span id="user-display" class="username-display" style="display: none;"></span>
+                <div id="user-menu" class="user-menu hidden">
+                    <div class="menu-item" onclick="window.location.href = '/';">
+                        <i class="fas fa-home"></i> Return to home page
+                    </div>
+                    <div class="menu-item" onclick="logout()">
+                        <i class="fas fa-sign-out-alt" onclick=""></i> Logout
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <div class="main-form">
+        <div class="sidebar">
+            <ul>
+                <li><i class="fa fa-link"></i>Links</li>
+                <li><i class="fa fa-user"></i>Users</li>
+                <li><i class="fa fa-cog"></i>Preferences</li>
+            </ul>
+        </div>
+        <main class="content">
+            <section class="section" id="links">
+                <div id="links">
+                    <div class="link-item">
+                        <div>
+                            <strong>Document:</strong> document_id <br>
+                            <strong>Original URL:</strong>
+                            <a href="original_url" target="_blank">original_url</a><br>
+                            <strong>User:</strong>
+                        </div>
+                        <div class="button-container">
+                            <button class="copy-button" onclick="copyLink(`${doc.id}`,this)">
+                                <i class="fa fa-copy"></i>
+                            </button>
+                            <button class="delete-button" onclick="deleteLink(`${doc.id}`, this)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+            <section class="section" id="users">
+                <div>
+                    <strong>Email</strong><br>
+                    Username: <br>
+                    Role: 
+                </div>
+                <div class="button-container">
+                    <button class="delete-button" onclick="deleteUser('${doc.id}', this)">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+
+
+
+                <div id="notification" class="notification hidden">
+                    <span id="notification-message"></span>
+
+                    <button id="send-email" class="send-btn hidden">Send Email</button>
+                    <button id="close-notification" class="close-btn">&times;</button>
+                </div>
+            </section>
+
+            <section class="section" id="preferences"></section>
+        </main>
+    </div>
+
+    <footer>
+        Scihook
+        <i class="scicon scicon-scihook"></i>
+    </footer>
+</body>
+
+</html>

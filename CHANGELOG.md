@@ -73,3 +73,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - "Account Settings" page created.
 - Password reset feature added.
+
+## [Unreleased]
+
+### Added
+- "Admin Panel" page created.
+- Added the ability to manage URLs for admins.
+- Added the ability to manage users for admins.

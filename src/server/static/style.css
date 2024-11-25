@@ -100,17 +100,17 @@ body {
     z-index: 100;
     display: none;
   }
-  .header .login-register .user-menu .menu-item {
+  .header .login-register .user-menu .menu-item, .header .login-register .user-menu .menu-item-admin {
     padding: 10px 20px;
     display: flex;
     align-items: center;
     cursor: pointer;
     transition: background-color 0.3s;
   }
-  .header .login-register .user-menu .menu-item:hover {
+  .header .login-register .user-menu .menu-item:hover, .header .login-register .user-menu .menu-item-admin:hover {
     background-color: #121212;
   }
-  .header .login-register .user-menu .menu-item i {
+  .header .login-register .user-menu .menu-item i, .header .login-register .user-menu .menu-item-admin i {
     margin-right: 10px;
     font-size: 1.2rem;
   }

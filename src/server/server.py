@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, redirect, render_template
 from flask_cors import CORS
 import hashlib
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials, firestore, auth
 import json
 import os
 
@@ -61,6 +61,10 @@ def recover():
 def account():
     return render_template('account.html')
 
+@app.route('/admin')
+def admin():
+    return render_template('adminpanel.html')
+
 @app.route('/shorten', methods=['GET'])
 def shorten():
     originalUrl = request.args.get('url')
@@ -99,6 +103,25 @@ def redirect_to_url(short_url):
     
     original_url = doc.to_dict().get('original_url')
     return redirect(original_url)
+
+
+@app.route('/delete-user', methods=['POST'])
+def delete_user():
+    try:
+        email = request.json.get('email')
+        if not email:
+            return jsonify({'error': 'E-mail is required'}), 400
+
+        user = auth.get_user_by_email(email)
+        uid = user.uid
+
+        
+        auth.delete_user(uid)
+        return jsonify({'Success!'})
+    except firebase_admin.auth.UserNotFoundError:
+        return jsonify({'error': 'User not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=False, port=port)
