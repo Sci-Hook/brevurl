@@ -1,4 +1,6 @@
-window.onload = function () {
+window.onload = async function () {
+    const headertitle = document.getElementById('header-title');
+
     const username = getCookie('username');
 
     const usernameDisplay = document.getElementById('user-display');
@@ -13,6 +15,23 @@ window.onload = function () {
     }
 
     usernameDisplay.addEventListener('click', toggleMenu);
+
+
+
+
+    const response = await fetch('/config');
+
+    if (!response.ok) {
+        const site_name = "Brevurl";
+
+
+    }
+    const data = await response.json();
+    const site_name = data.name;
+
+    const title = document.title;
+    document.title = title + site_name;
+    headertitle.textContent = site_name;
 };
 
 async function fetchAndDisplayLinks() {
@@ -36,17 +55,17 @@ async function fetchAndDisplayLinks() {
     try {
 
         const linksSection = document.getElementById('links');
-        linksSection.innerHTML = ''; 
+        linksSection.innerHTML = '';
 
-        
+
         const snapshot = await db.collection('urls').get();
         snapshot.forEach(doc => {
             const data = doc.data();
             if (data.user === username) {
                 const linkElement = document.createElement('div');
-                linkElement.classList.add('link-item'); 
+                linkElement.classList.add('link-item');
 
-                
+
                 linkElement.innerHTML = `
                     <div>
                         <strong>${doc.id}</strong><br>
@@ -74,18 +93,18 @@ async function fetchAndDisplayLinks() {
 
 function deleteLink(docId, button) {
     db.collection('urls').doc(docId).delete().then(() => {
-        button.innerHTML = '<i class="fa fa-check"></i>'; 
-        button.classList.add('success'); 
+        button.innerHTML = '<i class="fa fa-check"></i>';
+        button.classList.add('success');
         setTimeout(() => {
-            fetchAndDisplayLinks(); 
-        }, 1000); 
+            fetchAndDisplayLinks();
+        }, 1000);
     }).catch(error => {
         console.error('Error', error);
     });
 }
 function copyLink(url, button) {
     navigator.clipboard.writeText(url).then(() => {
-        button.innerHTML = '<i class="fa fa-check"></i>'; 
+        button.innerHTML = '<i class="fa fa-check"></i>';
         button.classList.add('success');
 
 

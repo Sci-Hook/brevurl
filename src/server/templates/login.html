@@ -12,14 +12,17 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js">
     </script>
     <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-firestore.js"></script>
+    <script type="module" src="{{ url_for('static', filename='authscript.js') }}"></script>
+
     <script src="{{ url_for('static', filename='auth.js') }}"></script>
-    <title>Login | Brevurl</title>
+
+    <title>Login | </title>
 </head>
 
 <body>
 
-    <div class="login-form">
-        <h2>Login to your Brevurl account</h2>
+    <div class="login-form" id="auth-page">
+        <h2>Login to your</h2>
         <form onsubmit="SignIn(event)">
             <div class="email-group">
                 <div class="input-icon"><i class="fas fa-envelope"></i></div>
@@ -36,7 +39,7 @@
         </form>
         <div class="group">
             <div class="form-info-text">
-                Don't have a Brevurl account? <a class='brevurl-link' href="{{ url_for('register') }}">Create</a> an account.
+                Don't have a account? <a class='brevurl-link' href="{{ url_for('register') }}">Create</a> an account.
             </div>
             <div class="form-info-text">
                 Can't access your account? <a class='brevurl-link' href="{{ url_for('recover') }}">Recover your account.</a>

@@ -1,9 +1,29 @@
-window.onload = function() {
+
+
+window.onload = async function () {
+    
     const loginBtn = document.getElementById('login');
     const registerBtn = document.getElementById('register');
     const adminPanel = document.getElementById('menu-item-admin');
     const loginRegisterDiv = document.querySelector('.login-register');
+    const h1Element = document.querySelector('h1');
+    const headertitle = document.getElementById('header-title');
 
+
+    const response = await fetch('/config');
+
+    if (!response.ok) {
+        const site_name = "Brevurl";
+
+
+    }
+    const data = await response.json();
+    const site_name = data.name;
+
+    
+    document.title = site_name;
+    h1Element.textContent = site_name;
+    headertitle.textContent = site_name;
 
     const username = getCookie('username');
     const role = getCookie('role');
@@ -19,12 +39,14 @@ window.onload = function() {
         if (role == 'admin') {
             adminPanel.style.display = 'inline-block';
 
-            
+
         }
     }
 
     userDisplay.addEventListener('click', toggleMenu);
 };
+
+
 
 function getCookie(name) {
     let cookieArr = document.cookie.split(";");
@@ -73,9 +95,9 @@ async function create_url_entry(event) {
             requestUrl += `&short=${encodeURIComponent(short)}`;
         }
         let username = getCookie('username');
-        if(username){
+        if (username) {
             requestUrl += `&user=${encodeURIComponent(username)}`;
-        }else{
+        } else {
             username = "Anonymous User";
             requestUrl += `&user=${encodeURIComponent(username)}`;
         }
@@ -87,15 +109,15 @@ async function create_url_entry(event) {
         const responseData = await getResponse.json();
 
         if (getResponse.ok) {
-            urlInput.value = "";  
-            shortInput.value = ""; 
-            showNotification(`Short URL: ${responseData.short_url}`,"success",responseData.short_url);
+            urlInput.value = "";
+            shortInput.value = "";
+            showNotification(`Short URL: ${responseData.short_url}`, "success", responseData.short_url);
         } else {
             showNotification(`Error: ${responseData.err}`, "error");
         }
     } catch (error) {
         console.error('Error:', error);
-        showNotification(`Error: ${error}`,"error");
+        showNotification(`Error: ${error}`, "error");
     }
 }
 
@@ -104,24 +126,24 @@ function showNotification(message, type = "error", copyText) {
     const notification = document.getElementById('notification');
     const notificationMessage = document.getElementById('notification-message');
     const closeBtn = document.getElementById('close-notification');
-    const copyUrl = document.querySelector('.copy-url'); 
+    const copyUrl = document.querySelector('.copy-url');
 
     notificationMessage.textContent = message;
 
-    
+
     if (type == "error") {
-        notification.style.backgroundColor = '#dc3545'; 
-        copyUrl.querySelector('.fa-copy').style.display = 'none'; 
-    } else if(type == "success"){
-        notification.style.backgroundColor = '#2215D2FF'; 
-        copyUrl.querySelector('.fa-copy').style.display = 'inline-block'; 
-    }else if(type == "info"){
+        notification.style.backgroundColor = '#dc3545';
+        copyUrl.querySelector('.fa-copy').style.display = 'none';
+    } else if (type == "success") {
+        notification.style.backgroundColor = '#2215D2FF';
+        copyUrl.querySelector('.fa-copy').style.display = 'inline-block';
+    } else if (type == "info") {
         notification.style.backgroundColor = '#007bff';
-        copyUrl.querySelector('.fa-copy').style.display = 'none';  
+        copyUrl.querySelector('.fa-copy').style.display = 'none';
 
     }
 
-    
+
     notification.classList.remove('hidden');
     notification.classList.add('visible');
 
@@ -133,9 +155,9 @@ function showNotification(message, type = "error", copyText) {
 
     copyUrl.addEventListener('click', () => {
         navigator.clipboard.writeText(copyText).then(() => {
-            showNotification("Copied to clipboard!","info","")
+            showNotification("Copied to clipboard!", "info", "")
         }).catch(err => {
-            showNotification("Hata", "error",err)
+            showNotification("Hata", "error", err)
         });
     });
 }

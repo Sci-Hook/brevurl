@@ -1,4 +1,6 @@
-window.onload = function () {
+window.onload = async function () {
+    const headertitle = document.getElementById('header-title');
+
     const username = getCookie('username');
     const role = getCookie('role');
 
@@ -19,6 +21,19 @@ window.onload = function () {
     }
 
     usernameDisplay.addEventListener('click', toggleMenu);
+    const response = await fetch('/config');
+
+    if (!response.ok) {
+        const site_name = "Brevurl";
+
+
+    }
+    const data = await response.json();
+    const site_name = data.name;
+
+    const title = document.title;
+    document.title = title+site_name;
+    headertitle.textContent = site_name;
 };
 
 async function fetchAndDisplayLinks() {
