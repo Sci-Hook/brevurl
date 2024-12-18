@@ -306,6 +306,8 @@ body {
             background-color: #2ecc71;
         }
 
+       
+
         @media (prefers-color-scheme: dark) {
             .link-item {
                 background-color: #1f1f1f;
@@ -383,7 +385,54 @@ body {
               display: none;
             }
           }
+          .preferences {
+            .switch-container {
+              display: flex;
+              align-items: center; 
+              justify-content: space-between; 
+              width: 100%; 
+              padding: 10px; 
+              background-color: #2b2b2b; 
+              border-radius: 8px; 
+              margin-bottom: 15px;
+            }
 
+            .switch-container:last-child {
+                margin-bottom: 20px;
+              }
+          
+            .switch {
+              width: 50px;
+              height: 24px;
+              background-color: #555;
+              border: none;
+              border-radius: 50px;
+              position: relative;
+              cursor: pointer;
+              transition: background-color 0.3s;
+          
+              &::before {
+                content: "";
+                width: 20px;
+                height: 20px;
+                background-color: #fff;
+                border-radius: 50%;
+                position: absolute;
+                top: 2px;
+                left: 2px;
+                transition: transform 0.3s;
+              }
+          
+              &.active {
+                background-color: #4caf50;
+          
+                &::before {
+                  transform: translateX(26px);
+                }
+              }
+            }
+          }
+          
     }
 
     @media (prefers-color-scheme: dark) {

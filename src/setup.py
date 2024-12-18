@@ -96,6 +96,13 @@ def main():
         firebase_admin.initialize_app(cred)
         db = firestore.client()
         db.collection("urls").document("scihook").set({'original_url': 'https://scihook.org/'}) #create url entry
+        db.collection("general").document("preferences").set(
+            {
+                'only-admin-short' : false,
+                'only-loggedon-short' : false
+            }
+        )
+        db.collection("general").document("blocked-words").set({})
         if account_bool == 1:
             firebase_admin.auth.create_user(email = email, password = password)
             db.collection("users").document(email).set({'username': username,'role':'admin'})

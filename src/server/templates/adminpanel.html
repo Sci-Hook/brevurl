@@ -72,7 +72,7 @@
                 <div>
                     <strong>Email</strong><br>
                     Username: <br>
-                    Role: 
+                    Role:
                 </div>
                 <div class="button-container">
                     <button class="delete-button" onclick="deleteUser('${doc.id}', this)">
@@ -90,7 +90,23 @@
                 </div>
             </section>
 
-            <section class="section" id="preferences"></section>
+            <section class="section" id="preferences">
+                <div class="preferences">
+                    <div class="switch-container">
+                        <span>Prevent anyone other than admin role from shortening URLs</span>
+                        <button class="switch" id="admin-only-short"></button>
+                    </div>
+                    <div class="switch-container">
+                        <span>Prevent non-logged in users from shortening URLs</span>
+                        <button class="switch" id="loggedon-only-short"></button>
+                    </div>
+
+                   
+                   
+
+                </div>
+
+            </section>
         </main>
     </div>
 

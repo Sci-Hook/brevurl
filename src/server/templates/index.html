@@ -13,7 +13,10 @@
     </script>
 
     <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>
-    <script type="module" src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-firestore.js"></script>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="{{ url_for('static', filename='auth.js') }}"></script>
 
 
@@ -44,7 +47,7 @@
 
     <div class="main-form">
         <h1>Brevurl</h1>
-        <form id="shorten-form" onsubmit="create_url_entry(event)">
+        <form id="shorten-form" action="javascript:void(0);" method="post" onsubmit="create_url_entry(event)">
             <div class="input-group">
                 <div class="input-icon"><i class="fas fa-link"></i></div>
                 <input type="text" id="url" name="url" placeholder="Enter the URL you want to shorten" required>

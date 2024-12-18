@@ -1,5 +1,3 @@
-
-
 window.onload = async function () {
     
     const loginBtn = document.getElementById('login');
@@ -42,9 +40,33 @@ window.onload = async function () {
 
         }
     }
-
+    
     userDisplay.addEventListener('click', toggleMenu);
 };
+
+
+async function fetchField(collection,document,field) {
+    db = firebase.firestore();
+
+    const docRef = db.collection(collection).doc(document); 
+
+    try {
+        const doc = await docRef.get();
+
+        
+        if (doc.exists && doc.data()[field] === true) {
+          
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        
+        console.error("Error:", error);
+        return true;
+    }
+    
+}
 
 
 
@@ -69,56 +91,89 @@ function toggleMenu() {
 
 async function create_url_entry(event) {
     event.preventDefault();
-    try {
-        const response = await fetch('/config');
+    const loggingRestriction = await fetchField("general","preferences","only-loggedon-short");
+    const adminRestriction = await fetchField("general","preferences","only-admin-short");
+    const username = getCookie('username');
+    const role = getCookie('role');
 
-        if (!response.ok) {
-            showNotification("Connection error", true);
-            throw new Error('Network response was not ok');
-        }
+    let access = true;
 
-        const data = await response.json();
-        const port = data.port;
-        const domain = data.domain;
-
-        const urlInput = document.getElementById('url');
-        const shortInput = document.getElementById('short');
-        let url = urlInput.value;
-        let short = shortInput.value || null;
-
-        if (!url.startsWith('http://') && !url.startsWith('https://')) {
-            url = `http://${url}`;
-        }
-
-        let requestUrl = `${domain}:${port}/shorten?url=${encodeURIComponent(url)}`;
-        if (short) {
-            requestUrl += `&short=${encodeURIComponent(short)}`;
-        }
-        let username = getCookie('username');
+    if(loggingRestriction == true){
         if (username) {
-            requestUrl += `&user=${encodeURIComponent(username)}`;
-        } else {
-            username = "Anonymous User";
-            requestUrl += `&user=${encodeURIComponent(username)}`;
+            access = true;
+        }else{
+            access = false;
+            showNotification("You must log in to continue the process", "error");
         }
-
-        const getResponse = await fetch(requestUrl, {
-            method: 'GET'
-        });
-
-        const responseData = await getResponse.json();
-
-        if (getResponse.ok) {
-            urlInput.value = "";
-            shortInput.value = "";
-            showNotification(`Short URL: ${responseData.short_url}`, "success", responseData.short_url);
-        } else {
-            showNotification(`Error: ${responseData.err}`, "error");
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        showNotification(`Error: ${error}`, "error");
     }
+
+    if (adminRestriction == true) {
+        if (username) {
+            if (role == 'admin') {
+                access = true;
+            }else{
+                access = false;
+                showNotification("This process is only available for admins", "error");
+            }
+        }else{
+            access = false;
+            showNotification("You must log in to continue the process", "error");
+        } 
+    }
+    if (access == true) {
+        try {
+            const response = await fetch('/config');
+    
+            if (!response.ok) {
+                showNotification("Connection error", true);
+                throw new Error('Network response was not ok');
+            }
+    
+            const data = await response.json();
+            const port = data.port;
+            const domain = data.domain;
+    
+            const urlInput = document.getElementById('url');
+            const shortInput = document.getElementById('short');
+            let url = urlInput.value;
+            let short = shortInput.value || null;
+    
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = `http://${url}`;
+            }
+    
+            let requestUrl = `${domain}:${port}/shorten?url=${encodeURIComponent(url)}`;
+            if (short) {
+                requestUrl += `&short=${encodeURIComponent(short)}`;
+            }
+            let username = getCookie('username');
+            if (username) {
+                requestUrl += `&user=${encodeURIComponent(username)}`;
+            } else {
+                username = "Anonymous User";
+                requestUrl += `&user=${encodeURIComponent(username)}`;
+            }
+    
+            const getResponse = await fetch(requestUrl, {
+                method: 'GET'
+            });
+    
+            const responseData = await getResponse.json();
+    
+            if (getResponse.ok) {
+                urlInput.value = "";
+                shortInput.value = "";
+                showNotification(`Short URL: ${responseData.short_url}`, "success", responseData.short_url);
+            } else {
+                showNotification(`Error: ${responseData.err}`, "error");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showNotification(`Error: ${error}`, "error");
+        }
+        
+    }
+   
 }
 
 
@@ -165,3 +220,5 @@ function showNotification(message, type = "error", copyText) {
 function redirectExtension() {
     showNotification("Coming soon!", "info", "")
 }
+
+

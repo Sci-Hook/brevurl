@@ -80,3 +80,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - "Admin Panel" page created.
 - Added the ability to manage URLs for admins.
 - Added the ability to manage users for admins.
+
+
+## [Unreleased]
+
+### Added
+
+- In the setup file, the user is asked for the site name and this name is integrated into the site.
+- Added options to allow only admins or logged in users to shorten urls.
+
