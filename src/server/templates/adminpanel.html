@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel | Brevurl</title>
+    <title>Admin Panel | </title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='adminpanel.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -23,7 +23,7 @@
 <body>
     <header>
         <div class="header">
-            <p class="header-title" onclick="window.location.href = '/';">Brevurl</p>
+            <p class="header-title" id="header-title" onclick="window.location.href = '/';">Brevurl</p>
             <div class="user">
                 <span id="user-display" class="username-display" style="display: none;"></span>
                 <div id="user-menu" class="user-menu hidden">
@@ -72,7 +72,7 @@
                 <div>
                     <strong>Email</strong><br>
                     Username: <br>
-                    Role: 
+                    Role:
                 </div>
                 <div class="button-container">
                     <button class="delete-button" onclick="deleteUser('${doc.id}', this)">
@@ -90,7 +90,23 @@
                 </div>
             </section>
 
-            <section class="section" id="preferences"></section>
+            <section class="section" id="preferences">
+                <div class="preferences">
+                    <div class="switch-container">
+                        <span>Prevent anyone other than admin role from shortening URLs</span>
+                        <button class="switch" id="admin-only-short"></button>
+                    </div>
+                    <div class="switch-container">
+                        <span>Prevent non-logged in users from shortening URLs</span>
+                        <button class="switch" id="loggedon-only-short"></button>
+                    </div>
+
+                   
+                   
+
+                </div>
+
+            </section>
         </main>
     </div>
 

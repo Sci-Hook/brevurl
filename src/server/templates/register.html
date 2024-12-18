@@ -13,14 +13,17 @@
         
     </script>
     <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-firestore.js"></script>
+    <script src="{{ url_for('static', filename='authscript.js') }}"></script>
+
     <script src="{{ url_for('static', filename='auth.js') }}"></script>
-    <title>Register | Brevurl</title>
+
+    <title>Register | </title>
 </head>
 
 <body>
 
-    <div class="register-form">
-        <h2>Create a Brevurl account</h2>
+    <div class="register-form" id="auth-page">
+        <h2>Create a </h2>
         <form onsubmit="Register(event)">
             <div class="email-group">
                 <div class="input-icon"><i class="fas fa-envelope"></i></div>
@@ -45,7 +48,7 @@
         </form>
         <div class="group">
             <div class="form-info-text">
-                Do you have a Brevurl account? <a class='brevurl-link' href="{{ url_for('login') }}">Login</a>
+                Do you have a account? <a class='brevurl-link' href="{{ url_for('login') }}">Login</a>
             </div>
         </div>
     </div>

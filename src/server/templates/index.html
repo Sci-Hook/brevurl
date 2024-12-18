@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brevurl</title>
+    <title></title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 
@@ -13,14 +13,18 @@
     </script>
 
     <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-firestore.js"></script>
+
+
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="{{ url_for('static', filename='auth.js') }}"></script>
+
 
 </head>
 <body>
   <header>
     <div class="header">
-        <p class="header-title">Brevurl</p>
+        <p class="header-title" id="header-title">Brevurl</p>
         <div class="login-register">
           <a href="{{ url_for('login') }}" id="login">Login</a>
           <a href="{{ url_for('register') }}" id="register">Register</a>
@@ -43,7 +47,7 @@
 
     <div class="main-form">
         <h1>Brevurl</h1>
-        <form id="shorten-form" onsubmit="create_url_entry(event)">
+        <form id="shorten-form" action="javascript:void(0);" method="post" onsubmit="create_url_entry(event)">
             <div class="input-group">
                 <div class="input-icon"><i class="fas fa-link"></i></div>
                 <input type="text" id="url" name="url" placeholder="Enter the URL you want to shorten" required>

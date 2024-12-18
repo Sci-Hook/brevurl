@@ -60,7 +60,9 @@ def main():
     print(Fore.YELLOW + "Checking web config file..." + Style.RESET_ALL)
     validate_firebase_config(web_config)
     print(Fore.GREEN + "Done" + Style.RESET_ALL)
-
+    name = input("Please enter project name: ")
+    if(name == ""):
+        name = "Brevurl"
     domain = input("Please enter the URL address where the server is located (e.g., https://example.com): ")
     port = input("Please enter the port that the server application will use (this port will be used for routing): ")
     account_available = get_user_input(
@@ -80,6 +82,7 @@ def main():
 
     
     brevurl_config.update({
+        "name": name,
         "domain": domain,
         "account_available": account_bool,
         "port": port,
@@ -93,6 +96,13 @@ def main():
         firebase_admin.initialize_app(cred)
         db = firestore.client()
         db.collection("urls").document("scihook").set({'original_url': 'https://scihook.org/'}) #create url entry
+        db.collection("general").document("preferences").set(
+            {
+                'only-admin-short' : false,
+                'only-loggedon-short' : false
+            }
+        )
+        db.collection("general").document("blocked-words").set({})
         if account_bool == 1:
             firebase_admin.auth.create_user(email = email, password = password)
             db.collection("users").document(email).set({'username': username,'role':'admin'})

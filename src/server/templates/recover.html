@@ -12,14 +12,17 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js">
     </script>
     <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-firestore.js"></script>
+    <script src="{{ url_for('static', filename='authscript.js') }}"></script>
+
     <script src="{{ url_for('static', filename='auth.js') }}"></script>
-    <title>Recover Account | Brevurl</title>
+
+    <title>Recover Account | </title>
 </head>
 
 <body>
 
-    <div class="login-form">
-        <h2>Recover your Brevurl account</h2>
+    <div class="login-form" id="auth-page">
+        <h2>Recover your </h2>
         <form onsubmit="Recover(event)">
             <div class="email-group">
                 <div class="input-icon"><i class="fas fa-envelope"></i></div>

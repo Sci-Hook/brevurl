@@ -1,4 +1,10 @@
-window.onload = function () {
+window.onload = async function () {
+    const headertitle = document.getElementById('header-title');
+    const adminOnlySwitch = document.getElementById("admin-only-short");
+    const loggedOnOnlySwitch = document.getElementById("loggedon-only-short");
+
+
+
     const username = getCookie('username');
     const role = getCookie('role');
 
@@ -10,6 +16,9 @@ window.onload = function () {
             usernameDisplay.style.display = 'inline-block';
             fetchAndDisplayLinks();
             fetchAndDisplayUsers();
+            fetchField("general","preferences","only-admin-short",adminOnlySwitch);
+            fetchField("general","preferences","only-loggedon-short",loggedOnOnlySwitch);
+
         } else {
             window.location.href = '/';
         }
@@ -19,6 +28,19 @@ window.onload = function () {
     }
 
     usernameDisplay.addEventListener('click', toggleMenu);
+    const response = await fetch('/config');
+
+    if (!response.ok) {
+        const site_name = "Brevurl";
+
+
+    }
+    const data = await response.json();
+    const site_name = data.name;
+
+    const title = document.title;
+    document.title = title+site_name;
+    headertitle.textContent = site_name;
 };
 
 async function fetchAndDisplayLinks() {
@@ -189,9 +211,75 @@ function getCookie(name) {
     return null;
 }
 
+async function updateField(collection,document,field,data) {
+    const docRef = db.collection(collection).doc(document); 
+    docRef.update({
+        [field]: data 
+    })
+    .then(() => {    })
+    .catch((error) => {
+        console.error("Error:", error);
+    });
+    
+}
+
+async function fetchField(collection,document,field,switchButton) {
+    const docRef = db.collection(collection).doc(document); 
+
+    try {
+        const doc = await docRef.get();
+
+        
+        if (doc.exists && doc.data()[field] === true) {
+          
+            switchButton.classList.add("active");
+        } else {
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+    
+}
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const sidebarItems = document.querySelectorAll('.sidebar ul li');
     const sections = document.querySelectorAll('.section');
+    const adminOnlySwitch = document.getElementById("admin-only-short");
+    const loggedOnOnlySwitch = document.getElementById("loggedon-only-short");
+
+
+
+    adminOnlySwitch.addEventListener("click", () => {
+        if (adminOnlySwitch.classList.contains("active")) {
+            updateField("general","preferences","only-admin-short",false);
+            fetchField("general","preferences","only-admin-short",adminOnlySwitch);
+
+            
+            
+        }else{
+            updateField("general","preferences","only-admin-short",true);
+            fetchField("general","preferences","only-admin-short",adminOnlySwitch);
+        }
+        adminOnlySwitch.classList.toggle("active");
+    });
+
+    loggedOnOnlySwitch.addEventListener("click", () => {
+        if (loggedOnOnlySwitch.classList.contains("active")) {
+            updateField("general","preferences","only-loggedon-short",false);
+            fetchField("general","preferences","only-loggedon-short",loggedOnOnlySwitch);
+
+            
+            
+        }else{
+            updateField("general","preferences","only-loggedon-short",true);
+            fetchField("general","preferences","only-loggedon-short",loggedOnOnlySwitch);
+        }
+        loggedOnOnlySwitch.classList.toggle("active");
+    });
+
+
+  
 
 
     sections.forEach((section, index) => {
@@ -262,3 +350,5 @@ function showNotification(message, type = "error", copyText) {
         }
     });
 }
+
+
