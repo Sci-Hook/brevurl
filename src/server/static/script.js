@@ -1,5 +1,5 @@
 window.onload = async function () {
-    
+
     const loginBtn = document.getElementById('login');
     const registerBtn = document.getElementById('register');
     const adminPanel = document.getElementById('menu-item-admin');
@@ -18,7 +18,7 @@ window.onload = async function () {
     const data = await response.json();
     const site_name = data.name;
 
-    
+
     document.title = site_name;
     h1Element.textContent = site_name;
     headertitle.textContent = site_name;
@@ -40,32 +40,32 @@ window.onload = async function () {
 
         }
     }
-    
+
     userDisplay.addEventListener('click', toggleMenu);
 };
 
 
-async function fetchField(collection,document,field) {
+async function fetchField(collection, document, field) {
     db = firebase.firestore();
 
-    const docRef = db.collection(collection).doc(document); 
+    const docRef = db.collection(collection).doc(document);
 
     try {
         const doc = await docRef.get();
 
-        
+
         if (doc.exists && doc.data()[field] === true) {
-          
+
             return true;
         } else {
             return false;
         }
     } catch (error) {
-        
+
         console.error("Error:", error);
         return true;
     }
-    
+
 }
 
 
@@ -89,19 +89,32 @@ function toggleMenu() {
     menu.classList.toggle('show');
 }
 
+async function fetchBannedWordsList() {
+    const db = firebase.firestore();
+    const doc = await db.collection('general').doc('banned-words').get();
+    if (doc.exists) {
+        const words = doc.data().words || [];
+        return words;
+    } else {
+        return [];  
+    }
+}
+
 async function create_url_entry(event) {
     event.preventDefault();
-    const loggingRestriction = await fetchField("general","preferences","only-loggedon-short");
-    const adminRestriction = await fetchField("general","preferences","only-admin-short");
+    const loggingRestriction = await fetchField("general", "preferences", "only-loggedon-short");
+    const adminRestriction = await fetchField("general", "preferences", "only-admin-short");
+    const urlInput = document.getElementById('url');
+    const shortInput = document.getElementById('short');
     const username = getCookie('username');
     const role = getCookie('role');
 
     let access = true;
 
-    if(loggingRestriction == true){
+    if (loggingRestriction == true) {
         if (username) {
             access = true;
-        }else{
+        } else {
             access = false;
             showNotification("You must log in to continue the process", "error");
         }
@@ -111,37 +124,50 @@ async function create_url_entry(event) {
         if (username) {
             if (role == 'admin') {
                 access = true;
-            }else{
+            } else {
                 access = false;
                 showNotification("This process is only available for admins", "error");
             }
-        }else{
+        } else {
             access = false;
             showNotification("You must log in to continue the process", "error");
-        } 
+        }
+    }
+
+    const banned_words = await fetchBannedWordsList();
+
+    if (access == true) {
+        if (banned_words.includes(shortInput.value.toLowerCase())) {
+            if (role != 'admin') {
+                access = false;
+                showNotification("Short name prohibited", "error");
+
+
+            }
+        }
+
     }
     if (access == true) {
         try {
             const response = await fetch('/config');
-    
+
             if (!response.ok) {
                 showNotification("Connection error", true);
                 throw new Error('Network response was not ok');
             }
-    
+
             const data = await response.json();
             const port = data.port;
             const domain = data.domain;
-    
-            const urlInput = document.getElementById('url');
-            const shortInput = document.getElementById('short');
+
+
             let url = urlInput.value;
             let short = shortInput.value || null;
-    
+
             if (!url.startsWith('http://') && !url.startsWith('https://')) {
                 url = `http://${url}`;
             }
-    
+
             let requestUrl = `${domain}:${port}/shorten?url=${encodeURIComponent(url)}`;
             if (short) {
                 requestUrl += `&short=${encodeURIComponent(short)}`;
@@ -153,13 +179,13 @@ async function create_url_entry(event) {
                 username = "Anonymous User";
                 requestUrl += `&user=${encodeURIComponent(username)}`;
             }
-    
+
             const getResponse = await fetch(requestUrl, {
                 method: 'GET'
             });
-    
+
             const responseData = await getResponse.json();
-    
+
             if (getResponse.ok) {
                 urlInput.value = "";
                 shortInput.value = "";
@@ -171,9 +197,9 @@ async function create_url_entry(event) {
             console.error('Error:', error);
             showNotification(`Error: ${error}`, "error");
         }
-        
+
     }
-   
+
 }
 
 

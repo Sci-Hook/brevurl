@@ -306,13 +306,100 @@ body {
             background-color: #2ecc71;
         }
 
-       
+        .banned-words-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            li {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: $light-bg;
+                padding: 0.5em;
+                margin-bottom: 0.5em;
+                border-radius: 5px;
+                color: $light-text;
+        
+                .delete-btn {
+                    background: none;
+                    border: none;
+                    color: #ff4d4f;
+                    font-size: 1.2em;
+                    cursor: pointer;
+        
+                    &:hover {
+                        color: #d9363e;
+                    }
+                }
+            }
+        }
+        
+        .add-banned-word {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+        
+            #banned-word-input {
+                flex: 1;
+                padding: 0.5em;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+        
+            #add-banned-word-btn {
+                padding: 0.5em 1em;
+                background: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+        
+                &:hover {
+                    background: #0056b3;
+                }
+            }
+        }
+        .banned-words{
+            width: 100%; 
+            padding: 10px; 
+            background-color: $light-input-bg; 
+            border-radius: 8px; 
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            
+        }
 
         @media (prefers-color-scheme: dark) {
             .link-item {
                 background-color: #1f1f1f;
             }
-
+            .banned-words{
+                background-color: $dark-input-bg; 
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                
+            }
+            .banned-words-list {
+                li {
+                    background: #262626;
+                  
+                    color: $dark-text;
+                }
+            }
+            
+            .add-banned-word {
+                #banned-word-input {
+                    border: 1px solid $dark-input-border;
+                    border-radius: 5px;
+                    background-color: $dark-input-bg;
+                    color: $dark-text;
+                }
+            
+                #add-banned-word-btn {
+                    color: $dark-text;
+                }
+            }
+            
 
 
 

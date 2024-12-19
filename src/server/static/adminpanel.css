@@ -241,9 +241,82 @@ body {
 .main-form .content .copy-button.success {
   background-color: #2ecc71;
 }
+.main-form .content .banned-words-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.main-form .content .banned-words-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #d3d3d3;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  border-radius: 5px;
+  color: #000000;
+}
+.main-form .content .banned-words-list li .delete-btn {
+  background: none;
+  border: none;
+  color: #ff4d4f;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+.main-form .content .banned-words-list li .delete-btn:hover {
+  color: #d9363e;
+}
+.main-form .content .add-banned-word {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.main-form .content .add-banned-word #banned-word-input {
+  flex: 1;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.main-form .content .add-banned-word #add-banned-word-btn {
+  padding: 0.5em 1em;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.main-form .content .add-banned-word #add-banned-word-btn:hover {
+  background: #0056b3;
+}
+.main-form .content .banned-words {
+  width: 100%;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 @media (prefers-color-scheme: dark) {
   .main-form .content .link-item {
     background-color: #1f1f1f;
+  }
+  .main-form .content .banned-words {
+    background-color: #2c2c2c;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .main-form .content .banned-words-list li {
+    background: #262626;
+    color: #e0e0e0;
+  }
+  .main-form .content .add-banned-word #banned-word-input {
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+  }
+  .main-form .content .add-banned-word #add-banned-word-btn {
+    color: #e0e0e0;
   }
 }
 .main-form .content .notification {

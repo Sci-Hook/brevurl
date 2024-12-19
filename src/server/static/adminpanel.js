@@ -16,6 +16,7 @@ window.onload = async function () {
             usernameDisplay.style.display = 'inline-block';
             fetchAndDisplayLinks();
             fetchAndDisplayUsers();
+            fetchBannedWords();
             fetchField("general","preferences","only-admin-short",adminOnlySwitch);
             fetchField("general","preferences","only-loggedon-short",loggedOnOnlySwitch);
 
@@ -240,13 +241,80 @@ async function fetchField(collection,document,field,switchButton) {
     }
     
 }
+function fetchBannedWords() {
+    const bannedWordsList = document.getElementById('banned-words-list');
+    db.collection('general').doc('banned-words').get().then(doc => {
+        if (doc.exists) {
+            const words = doc.data().words || [];
+            bannedWordsList.innerHTML = ''; 
+            words.forEach((word, index) => {
+                const li = document.createElement('li');
+                li.textContent = word;
 
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = '✖';
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.setAttribute('data-index', index); 
+
+                li.appendChild(deleteBtn);
+                bannedWordsList.appendChild(li);
+            });
+        }
+    });
+}
+
+function addBannedWord() {
+    const inputField = document.getElementById('banned-word-input');
+    const word = inputField.value.trim();
+    if (word) {
+        const docRef = db.collection('general').doc('banned-words');
+        docRef.get().then(doc => {
+            if (doc.exists) {
+                const words = doc.data().words || [];
+                words.push(word); 
+                docRef.update({ words }).then(() => {
+                    inputField.value = ''; 
+                    fetchBannedWords(); 
+                });
+            } else {
+                docRef.set({ words: [word] }).then(() => {
+                    inputField.value = ''; 
+                    fetchBannedWords(); 
+                });
+            }
+        });
+    }
+}
+
+function deleteBannedWord(index) {
+    const docRef = db.collection('general').doc('banned-words');
+    docRef.get().then(doc => {
+        if (doc.exists) {
+            const words = doc.data().words || [];
+            words.splice(index, 1); 
+            docRef.update({ words }).then(() => {
+                fetchBannedWords(); 
+            });
+        }
+    });
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     const sidebarItems = document.querySelectorAll('.sidebar ul li');
     const sections = document.querySelectorAll('.section');
     const adminOnlySwitch = document.getElementById("admin-only-short");
     const loggedOnOnlySwitch = document.getElementById("loggedon-only-short");
+    const addButton = document.getElementById('add-banned-word-btn');
+    const bannedWordsList = document.getElementById('banned-words-list');
+
+    addButton.addEventListener('click', addBannedWord);
+
+    bannedWordsList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('delete-btn')) {
+            const wordId = event.target.getAttribute('data-id');
+            deleteBannedWord(wordId);
+        }
+    });
 
 
 
