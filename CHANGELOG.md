@@ -89,3 +89,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - In the setup file, the user is asked for the site name and this name is integrated into the site.
 - Added options to allow only admins or logged in users to shorten urls.
 
+## [Unreleased]
+
+### Added
+
+- Added URL short name banned list.
