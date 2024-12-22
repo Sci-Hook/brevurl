@@ -94,3 +94,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added URL short name banned list.
+
+## [Unreleased]
+
+### Added
+
+- The site was made mobile compatible(after a painful process).

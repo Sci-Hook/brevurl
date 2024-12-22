@@ -38,9 +38,39 @@ body {
     align-items: center;
     position: fixed;
     top: 0;
-    width: 100%;
-    box-sizing: border-box;
+    left: 0; 
+    width: 100vw;  
+    box-sizing: border-box;  
     z-index: 10;
+    #sidebar-toggle {
+        background-color: transparent;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.8rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      
+        i {
+          font-size: 1.5rem;
+          color: #fff;
+          transition: transform 0.2s ease;
+        }
+      
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.1);
+          transform: scale(1.1); 
+        }
+      
+        &:active {
+          background-color: rgba(0, 0, 0, 0.2);
+        }
+      
+        &:focus {
+          outline: none; 
+        }
+      }
 
     .header-title {
         color: #ffffff;
@@ -181,6 +211,9 @@ body {
         color: $light-text;
         height: 100%;
         position: fixed;
+        &.hidden {
+            display: none; 
+        }
 
         ul {
             list-style: none;
@@ -219,7 +252,8 @@ body {
         padding: 2rem;
         background-color: $light-bg;
         color: $light-text;
-        width: calc(100% - #{$sidebar-width});
+        width: 100vw;
+        box-sizing: border-box;  
 
 
 
@@ -519,7 +553,35 @@ body {
               }
             }
           }
-          
+          @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+        
+            .content {
+                margin-left: 0;
+            }
+        
+            .sidebar.hidden + .content {
+                margin-left: 0;
+            }
+    
+    
+            .link-item {
+                display: flex;
+                flex-direction: column; 
+                justify-content: space-between;
+                align-items: flex-start;
+                padding: 20px;
+                margin-bottom: 15px;
+                border-radius: 12px;
+               
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            
+                div {
+                    margin-bottom: 10px; 
+                }}
+        }
     }
 
     @media (prefers-color-scheme: dark) {
