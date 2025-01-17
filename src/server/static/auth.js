@@ -12,38 +12,45 @@ initializeFirebase();
 
 async function signin(email, password) {
     try {
-        const signin = await auth.signInWithEmailAndPassword(email, password);
-        let username = await getUsername(email);
-        if (username == null) {
-            showNotificationauth('Auth Error: Username not found', 'error-auth');
-            return;
-        }
-        var user = auth.currentUser;
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+
+
 
         if (user) {
             if (user.emailVerified) {
-                showNotificationauth('Successfully signed in!', 'success-auth');
-                let now = new Date();
-                now.setMonth(now.getMonth() + 1);
-                let expire_date = now.toUTCString();
-                document.cookie = "email=" + email + ";" + "expires=" + expire_date + "; path=/";
-                document.cookie = "username=" + username[0] + ";" + "expires=" + expire_date + "; path=/";
-                document.cookie = "role=" + username[1] + ";" + "expires=" + expire_date + "; path=/";
-                window.location.href = '/';
+                const idToken = await user.getIdToken();
+
+                const response = await fetch('/login-process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ idToken }) 
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showNotificationauth("Successfuly signed in", "success-auth")
+                    window.location.href = '/';
+
+                } else {
+                    showNotificationauth(`Error: ${data.error}`, "error-auth")
+
+                }
             } else {
                 showNotificationauth('Email is not verified', 'need-verify-auth');
+
             }
         }
-    } catch (e) {
-        if (e.message.includes('INVALID_LOGIN_CREDENTIALS')) {
-            console.error('Auth Error:', e);
-            showNotificationauth('Invalid username or password', 'error-auth');
-        } else {
-            console.error('Auth Error:', e);
-            showNotificationauth(`Auth Error: ${e.message}`, 'error-auth');
-        }
-        return;
+
+
+    } catch (error) {
+        showNotificationauth(`Error: ${error}`, "error-auth")
+
     }
+
 }
 
 async function SignIn(event) {
@@ -179,11 +186,15 @@ async function getUsername(email) {
     }
 }
 
-function logout() {
+async function logout() {
     firebase.auth().signOut().then(() => {
-        deleteCookie("username");
-        deleteCookie("email");
-        deleteCookie("role");
+        fetch('/logout')
+            .then(response => {
+                if (!response.ok) {
+                    console.error('Error signing out');
+                }
+            })
+
         window.location.href = '/';
     }).catch((error) => {
         console.error('Error signing out: ', error);

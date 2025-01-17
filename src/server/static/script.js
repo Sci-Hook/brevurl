@@ -22,26 +22,40 @@ window.onload = async function () {
     document.title = site_name;
     h1Element.textContent = site_name;
     headertitle.textContent = site_name;
+    
 
-    const username = getCookie('username');
-    const role = getCookie('role');
-    const userDisplay = document.getElementById('user-display');
+    fetch('/getloginstatus')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network err');
+            }
+            return response.json();  
+        })
+        .then(data => {
+            const login_status = data.status;
+            const username = data.username;
+            const role = data.role;
+            const userDisplay = document.getElementById('user-display');
 
-    if (username) {
-        loginBtn.style.display = 'none';
-        registerBtn.style.display = 'none';
+            if (login_status === "True") {
 
-        userDisplay.textContent = username;
-        userDisplay.style.display = 'inline-block';
+                loginBtn.style.display = 'none';
+                registerBtn.style.display = 'none';
 
-        if (role == 'admin') {
-            adminPanel.style.display = 'inline-block';
+                userDisplay.textContent = username;
+                userDisplay.style.display = 'inline-block';
 
+                if (role === 'admin') {
+                    adminPanel.style.display = 'inline-block';
+                }
+            }
 
-        }
-    }
+            userDisplay.addEventListener('click', toggleMenu);
+        })
+        .catch(error => {
+            console.error('Hata:', error);  
+        });
 
-    userDisplay.addEventListener('click', toggleMenu);
 };
 
 
@@ -96,18 +110,25 @@ async function fetchBannedWordsList() {
         const words = doc.data().words || [];
         return words;
     } else {
-        return [];  
+        return [];
     }
 }
 
 async function create_url_entry(event) {
     event.preventDefault();
-    const loggingRestriction = await fetchField("general", "preferences", "only-loggedon-short");
-    const adminRestriction = await fetchField("general", "preferences", "only-admin-short");
+
+    const usr_response = await fetch('/getloginstatus');
+    if(!usr_response.ok){
+        throw new Error('Network response was not ok');
+    }
+    
+    const usrdata = await usr_response.json();
+    const loggingRestriction = await fetchField("general", "preferences", "only_loggedon_short");
+    const adminRestriction = await fetchField("general", "preferences", "only_admin_short");
     const urlInput = document.getElementById('url');
     const shortInput = document.getElementById('short');
-    const username = getCookie('username');
-    const role = getCookie('role');
+    const username = usrdata.username;
+    const role = usrdata.role;
 
     let access = true;
 
@@ -136,16 +157,15 @@ async function create_url_entry(event) {
 
     const banned_words = await fetchBannedWordsList();
 
-    if (access == true) {
-        if (banned_words.includes(shortInput.value.toLowerCase())) {
-            if (role != 'admin') {
+    if (access === true) {
+        const shortInputValue = shortInput.value.toLowerCase();
+    
+        if (banned_words.some(word => shortInputValue.includes(word))) {
+            if (role !== 'admin') {
                 access = false;
                 showNotification("Short name prohibited", "error");
-
-
             }
         }
-
     }
     if (access == true) {
         try {
@@ -172,12 +192,11 @@ async function create_url_entry(event) {
             if (short) {
                 requestUrl += `&short=${encodeURIComponent(short)}`;
             }
-            let username = getCookie('username');
             if (username) {
                 requestUrl += `&user=${encodeURIComponent(username)}`;
             } else {
-                username = "Anonymous User";
-                requestUrl += `&user=${encodeURIComponent(username)}`;
+                const username_anym = "Anonymous User";
+                requestUrl += `&user=${encodeURIComponent(username_anym)}`;
             }
 
             const getResponse = await fetch(requestUrl, {
