@@ -307,6 +307,10 @@ def get_web_config():
 def index():
     return render_template('index.html')
 
+@app.route('/ourteam')
+def our_team():
+    return render_template('ourteam.html')
+
 @app.route('/login')
 def login():
     return render_template('login.html')

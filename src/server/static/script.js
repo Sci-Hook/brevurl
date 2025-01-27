@@ -1,6 +1,7 @@
 window.onload = async function () {
 
     const loginBtn = document.getElementById('login');
+    const teamBtn = document.getElementById('ourteam');
     const registerBtn = document.getElementById('register');
     const adminPanel = document.getElementById('menu-item-admin');
     const loginRegisterDiv = document.querySelector('.login-register');
@@ -40,6 +41,8 @@ window.onload = async function () {
             if (login_status === "True") {
 
                 loginBtn.style.display = 'none';
+                teamBtn.style.display = 'none';
+
                 registerBtn.style.display = 'none';
 
                 userDisplay.textContent = username;
