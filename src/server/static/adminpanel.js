@@ -172,27 +172,89 @@ async function performAdminAction(actionDetails){
 }
 
 async function deleteLink(docId, button) {
+    const modal = document.getElementById('delete-confirmation-modal');
+    const modalContent = modal.querySelector('.modal-content');
+    const confirmButton = document.getElementById('confirm-delete-btn');
+    const cancelButton = document.getElementById('cancel-delete-btn');
+
+    modal.classList.remove('hidden');
+    modal.classList.add('visible');
+
+    const confirmDelete = await new Promise((resolve) => {
+        confirmButton.onclick = () => {
+            closeModal(true);
+            resolve(true);
+        };
+
+        cancelButton.onclick = () => {
+            closeModal(false);
+            resolve(false);
+        };
+
+        function closeModal(isConfirmed) {
+            modalContent.classList.add('exit'); 
+            setTimeout(() => {
+                modalContent.classList.remove('exit'); 
+                modal.classList.remove('visible');
+                modal.classList.add('hidden');
+            }, 500);
+        }
+    });
+
+    if (!confirmDelete) return; 
+
     const actionDetails = {
         action: "delete_link",
-        link: docId
+        link: docId,
     };
-    
+
     const data = await performAdminAction(actionDetails);
     const status = data.status;
+
     if (status == "True") {
         button.innerHTML = '<i class="fa fa-check"></i>';
         button.classList.add('success');
         setTimeout(() => {
             fetchAndDisplayLinks();
         }, 1000);
-        
-    }else{
+    } else {
         const error = status.error;
         console.log(error);
     }
 }
 
+
 async function deleteUser(email, button) {
+    const modal = document.getElementById('delete-confirmation-modal');
+    const modalContent = modal.querySelector('.modal-content');
+    const confirmButton = document.getElementById('confirm-delete-btn');
+    const cancelButton = document.getElementById('cancel-delete-btn');
+
+    modal.classList.remove('hidden');
+    modal.classList.add('visible');
+
+    const confirmDelete = await new Promise((resolve) => {
+        confirmButton.onclick = () => {
+            closeModal(true);
+            resolve(true);
+        };
+
+        cancelButton.onclick = () => {
+            closeModal(false);
+            resolve(false);
+        };
+
+        function closeModal(isConfirmed) {
+            modalContent.classList.add('exit'); 
+            setTimeout(() => {
+                modalContent.classList.remove('exit'); 
+                modal.classList.remove('visible');
+                modal.classList.add('hidden');
+            }, 500);
+        }
+    });
+
+    if (!confirmDelete) return; 
     const actionDetails = {
         action: "delete_user",
         email: email

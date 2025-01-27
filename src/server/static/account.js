@@ -117,6 +117,36 @@ async function fetchAndDisplayLinks() {
 
 
 async function deleteLink(docId, button) {
+    const modal = document.getElementById('delete-confirmation-modal');
+    const modalContent = modal.querySelector('.modal-content');
+    const confirmButton = document.getElementById('confirm-delete-btn');
+    const cancelButton = document.getElementById('cancel-delete-btn');
+
+    modal.classList.remove('hidden');
+    modal.classList.add('visible');
+
+    const confirmDelete = await new Promise((resolve) => {
+        confirmButton.onclick = () => {
+            closeModal(true);
+            resolve(true);
+        };
+
+        cancelButton.onclick = () => {
+            closeModal(false);
+            resolve(false);
+        };
+
+        function closeModal(isConfirmed) {
+            modalContent.classList.add('exit'); 
+            setTimeout(() => {
+                modalContent.classList.remove('exit'); 
+                modal.classList.remove('visible');
+                modal.classList.add('hidden');
+            }, 500);
+        }
+    });
+
+    if (!confirmDelete) return; 
     const actionDetails = {
         action: "delete_link",
         link: docId
