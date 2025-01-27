@@ -12,38 +12,52 @@ initializeFirebase();
 
 async function signin(email, password) {
     try {
-        const signin = await auth.signInWithEmailAndPassword(email, password);
-        let username = await getUsername(email);
-        if (username == null) {
-            showNotificationauth('Auth Error: Username not found', 'error-auth');
-            return;
-        }
-        var user = auth.currentUser;
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+
+
 
         if (user) {
             if (user.emailVerified) {
-                showNotificationauth('Successfully signed in!', 'success-auth');
-                let now = new Date();
-                now.setMonth(now.getMonth() + 1);
-                let expire_date = now.toUTCString();
-                document.cookie = "email=" + email + ";" + "expires=" + expire_date + "; path=/";
-                document.cookie = "username=" + username[0] + ";" + "expires=" + expire_date + "; path=/";
-                document.cookie = "role=" + username[1] + ";" + "expires=" + expire_date + "; path=/";
-                window.location.href = '/';
+                const idToken = await user.getIdToken();
+
+                const response = await fetch('/login-process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ idToken }) 
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showNotificationauth("Successfuly signed in", "success-auth")
+                    window.location.href = '/';
+
+                } else {
+                    showNotificationauth(`Error: ${data.error}`, "error-auth")
+
+                }
             } else {
                 showNotificationauth('Email is not verified', 'need-verify-auth');
+
             }
         }
-    } catch (e) {
-        if (e.message.includes('INVALID_LOGIN_CREDENTIALS')) {
-            console.error('Auth Error:', e);
-            showNotificationauth('Invalid username or password', 'error-auth');
-        } else {
-            console.error('Auth Error:', e);
-            showNotificationauth(`Auth Error: ${e.message}`, 'error-auth');
+
+
+    } catch (error) {
+        if(error.message.includes("INVALID_LOGIN_CREDENTIALS")){
+            showNotificationauth("Username or password is wrong", "error-auth")
+
+
+        }else{
+            showNotificationauth(`Error: ${error}`, "error-auth")
+
         }
-        return;
+
     }
+
 }
 
 async function SignIn(event) {
@@ -150,7 +164,7 @@ function showNotificationauth(message, type = "error-auth", copyText) {
     });
 
     sendEmailBtn.addEventListener('click', () => {
-        if (document.title == "Recover Account | Brevurl") {
+        if (document.title.includes("Recover")) {
             window.location.href = '/login';
         } else {
             var user = auth.currentUser;
@@ -179,18 +193,22 @@ async function getUsername(email) {
     }
 }
 
-function logout() {
+async function logout() {
     firebase.auth().signOut().then(() => {
-        deleteCookie("username");
-        deleteCookie("email");
-        deleteCookie("role");
+        fetch('/logout')
+            .then(response => {
+                if (!response.ok) {
+                    console.error('Error signing out');
+                }
+            })
+
         window.location.href = '/';
     }).catch((error) => {
         console.error('Error signing out: ', error);
     });
 }
 
-function resetPassword(event) {
+async function resetPassword(event) {
     event.preventDefault();
     const current_password_element = document.getElementById('current-password');
     const password_element = document.getElementById('new-password');
@@ -198,69 +216,93 @@ function resetPassword(event) {
     let new_password = password_element.value;
     let password_control = password_control_element.value;
     let current_password = current_password_element.value;
+    fetch('/getloginstatus')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network err');
+        }
+        return response.json();  
+    })
+    .then(data => {
+        const login_status = data.status;
+        const email = data.email;
+  
+        if (login_status === "True") {
+            const user = auth.currentUser;
 
-
-
-    const user = auth.currentUser;
-    const email = getCookie("email");
-
-    if (user) {
-        const credential = firebase.auth.EmailAuthProvider.credential(email, current_password);
-
-        user.reauthenticateWithCredential(credential)
-            .then(() => {
-
-                if (new_password == password_control) {
-                    if (new_password != current_password) {
-                        user.updatePassword(new_password)
-                            .then(() => {
+            if (user) {
+                const credential = firebase.auth.EmailAuthProvider.credential(email, current_password);
+        
+                user.reauthenticateWithCredential(credential)
+                    .then(() => {
+        
+                        if (new_password == password_control) {
+                            if (new_password != current_password) {
+                                user.updatePassword(new_password)
+                                    .then(() => {
+                                        password_element.value = "";
+                                        password_control_element.value = "";
+                                        current_password_element.value = "";
+                                        showNotificationauth("Your password updated successfuly", "success-auth");
+                                    })
+                                    .catch((error) => {
+                                        password_element.value = "";
+                                        password_control_element.value = "";
+                                        current_password_element.value = "";
+                                        showNotificationauth(`Error: ${error.message}`, "error-auth");
+        
+                                    });
+        
+                            } else {
                                 password_element.value = "";
                                 password_control_element.value = "";
                                 current_password_element.value = "";
-                                showNotificationauth("Your password updated successfuly", "success-auth");
-                            })
-                            .catch((error) => {
-                                password_element.value = "";
-                                password_control_element.value = "";
-                                current_password_element.value = "";
-                                showNotificationauth(`Error: ${error.message}`, "error-auth");
-
-                            });
-
-                    } else {
+                                showNotificationauth("Your password cannot be the same as before", "error-auth");
+        
+                            }
+                        } else {
+                            password_element.value = "";
+                            password_control_element.value = "";
+                            current_password_element.value = "";
+                            showNotificationauth("Passwords dont match", "error-auth");
+        
+                        }
+        
+        
+                    })
+                    .catch((e) => {
                         password_element.value = "";
                         password_control_element.value = "";
                         current_password_element.value = "";
-                        showNotificationauth("Your password cannot be the same as before", "error-auth");
-
-                    }
-                } else {
-                    password_element.value = "";
-                    password_control_element.value = "";
-                    current_password_element.value = "";
-                    showNotificationauth("Passwords dont match", "error-auth");
-
-                }
-
-
-            })
-            .catch((e) => {
+                        if (e.message.includes('INVALID_LOGIN_CREDENTIALS')) {
+                            showNotificationauth("Your current password is incorrect", "error-auth")
+                        } else {
+                            showNotificationauth(`Error: ${e.message}`, "error-auth");
+                        }
+        
+                    });
+            } else {
                 password_element.value = "";
                 password_control_element.value = "";
                 current_password_element.value = "";
-                if (e.message.includes('INVALID_LOGIN_CREDENTIALS')) {
-                    showNotificationauth("Your current password is incorrect", "error-auth")
-                } else {
-                    showNotificationauth(`Error: ${e.message}`, "error-auth");
-                }
+                showNotificationauth("Auth Error. Please relogin", "error-auth");
+            }
 
-            });
-    } else {
-        password_element.value = "";
-        password_control_element.value = "";
-        current_password_element.value = "";
-        showNotificationauth("Auth Error. Please relogin", "error-auth");
-    }
+        }else{
+            showNotificationauth("Error: Your password could not be reset. Try again or log out and reset your password from account recovery page","error-auth")
+        }
+
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotificationauth("Error: Your password could not be reset. Try again or log out and reset your password from account recovery page","error-auth")
+
+    });
+    
+
+
+
+
 
 }
 

@@ -1,21 +1,31 @@
 window.onload = async function () {
     const headertitle = document.getElementById('header-title');
+    fetch('/getloginstatus')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network err');
+        }
+        return response.json();  
+    })
+    .then(data => {
+        const login_status = data.status;
+        const username = data.username;
+        const usernameDisplay = document.getElementById('user-display');
+        if (login_status === "True") {
 
-    const username = getCookie('username');
+            usernameDisplay.textContent = username;
+            usernameDisplay.style.display = 'inline-block';
+            fetchAndDisplayLinks();
+        }else{
+            window.location.href = "/login";
+        }
 
-    const usernameDisplay = document.getElementById('user-display');
-
-    if (username) {
-        usernameDisplay.textContent = username;
-        usernameDisplay.style.display = 'inline-block';
-        fetchAndDisplayLinks();
-
-    } else {
-        window.location.href = '/login';
-    }
-
-    usernameDisplay.addEventListener('click', toggleMenu);
-
+        usernameDisplay.addEventListener('click', toggleMenu);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        window.location.href = "/login";  
+    });
 
 
 
@@ -33,7 +43,18 @@ window.onload = async function () {
     document.title = title + site_name;
     headertitle.textContent = site_name;
 };
+async function performAdminAction(actionDetails){
+    const response = await fetch('/usr-action', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(actionDetails) 
+    });
 
+    const data = await response.json();
+    return data
+}
 async function fetchAndDisplayLinks() {
     const response = await fetch('/config');
 
@@ -45,14 +66,18 @@ async function fetchAndDisplayLinks() {
     const port = data.port;
     const domain = data.domain;
     db = firebase.firestore();
-    const username = getCookie('username');
 
-    if (!username) {
-        console.error('Username not found');
-        return;
-    }
+    
+
 
     try {
+        const usr_response = await fetch('/getloginstatus');
+        
+        if(!usr_response.ok){
+            throw new Error('Network response was not ok');
+        }
+        const usrdata = await usr_response.json();
+        const username = usrdata.username;
 
         const linksSection = document.getElementById('links');
         linksSection.innerHTML = '';
@@ -91,16 +116,55 @@ async function fetchAndDisplayLinks() {
 }
 
 
-function deleteLink(docId, button) {
-    db.collection('urls').doc(docId).delete().then(() => {
+async function deleteLink(docId, button) {
+    const modal = document.getElementById('delete-confirmation-modal');
+    const modalContent = modal.querySelector('.modal-content');
+    const confirmButton = document.getElementById('confirm-delete-btn');
+    const cancelButton = document.getElementById('cancel-delete-btn');
+
+    modal.classList.remove('hidden');
+    modal.classList.add('visible');
+
+    const confirmDelete = await new Promise((resolve) => {
+        confirmButton.onclick = () => {
+            closeModal(true);
+            resolve(true);
+        };
+
+        cancelButton.onclick = () => {
+            closeModal(false);
+            resolve(false);
+        };
+
+        function closeModal(isConfirmed) {
+            modalContent.classList.add('exit'); 
+            setTimeout(() => {
+                modalContent.classList.remove('exit'); 
+                modal.classList.remove('visible');
+                modal.classList.add('hidden');
+            }, 500);
+        }
+    });
+
+    if (!confirmDelete) return; 
+    const actionDetails = {
+        action: "delete_link",
+        link: docId
+    };
+    
+    const data = await performAdminAction(actionDetails);
+    const status = data.status;
+    if (status == "True") {
         button.innerHTML = '<i class="fa fa-check"></i>';
         button.classList.add('success');
         setTimeout(() => {
             fetchAndDisplayLinks();
         }, 1000);
-    }).catch(error => {
-        console.error('Error', error);
-    });
+        
+    }else{
+        const error = status.error;
+        console.log(error);
+    }
 }
 function copyLink(url, button) {
     navigator.clipboard.writeText(url).then(() => {
@@ -165,6 +229,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     sidebarItems.forEach((item, index) => {
         item.addEventListener('click', () => {
+            if (index === 0) {
+                fetchAndDisplayLinks();
+                
+            }
             sections.forEach(section => section.style.display = 'none');
 
 

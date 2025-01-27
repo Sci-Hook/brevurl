@@ -1,34 +1,45 @@
 window.onload = async function () {
     const headertitle = document.getElementById('header-title');
-    const adminOnlySwitch = document.getElementById("admin-only-short");
-    const loggedOnOnlySwitch = document.getElementById("loggedon-only-short");
 
-
-
-    const username = getCookie('username');
-    const role = getCookie('role');
-
-    const usernameDisplay = document.getElementById('user-display');
-
-    if (username) {
-        if (role == 'admin') {
+    fetch('/getloginstatus')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network err');
+        }
+        return response.json();  
+    })
+    .then(data => {
+        const login_status = data.status;
+        const username = data.username;
+        const role = data.role;
+        const usernameDisplay = document.getElementById('user-display');
+        if (login_status === "True") {
+            if(role == "admin"){
             usernameDisplay.textContent = username;
             usernameDisplay.style.display = 'inline-block';
             fetchAndDisplayLinks();
             fetchAndDisplayUsers();
             fetchBannedWords();
-            fetchField("general","preferences","only-admin-short",adminOnlySwitch);
-            fetchField("general","preferences","only-loggedon-short",loggedOnOnlySwitch);
+            fetchField("general","preferences","only_admin_short",adminOnlySwitch);
+            fetchField("general","preferences","only_loggedon_short",loggedOnOnlySwitch);
+            }else{
+                window.location.href = "/"
+            }
 
-        } else {
-            window.location.href = '/';
+
+        }else{
+            window.location.href = "/login";
         }
 
-    } else {
-        window.location.href = '/login';
-    }
+        usernameDisplay.addEventListener('click', toggleMenu);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        window.location.href = "/login";  
+    });
 
-    usernameDisplay.addEventListener('click', toggleMenu);
+
+
     const response = await fetch('/config');
 
     if (!response.ok) {
@@ -40,9 +51,16 @@ window.onload = async function () {
     const site_name = data.name;
 
     const title = document.title;
-    document.title = title+site_name;
+    document.title = title + site_name;
     headertitle.textContent = site_name;
-};
+    const adminOnlySwitch = document.getElementById("admin-only-short");
+    const loggedOnOnlySwitch = document.getElementById("loggedon-only-short");
+
+
+
+    
+}
+
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const content = document.querySelector('.content');
@@ -68,12 +86,6 @@ async function fetchAndDisplayLinks() {
     const port = data.port;
     const domain = data.domain;
     db = firebase.firestore();
-    const username = getCookie('username');
-
-    if (!username) {
-        console.error('Username not found');
-        return;
-    }
 
     try {
         const linksSection = document.getElementById('links');
@@ -146,47 +158,120 @@ async function fetchAndDisplayUsers() {
 }
 
 
-function deleteLink(docId, button) {
-    db.collection('urls').doc(docId).delete().then(() => {
+async function performAdminAction(actionDetails){
+    const response = await fetch('/admin-action', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(actionDetails) 
+    });
+
+    const data = await response.json();
+    return data
+}
+
+async function deleteLink(docId, button) {
+    const modal = document.getElementById('delete-confirmation-modal');
+    const modalContent = modal.querySelector('.modal-content');
+    const confirmButton = document.getElementById('confirm-delete-btn');
+    const cancelButton = document.getElementById('cancel-delete-btn');
+
+    modal.classList.remove('hidden');
+    modal.classList.add('visible');
+
+    const confirmDelete = await new Promise((resolve) => {
+        confirmButton.onclick = () => {
+            closeModal(true);
+            resolve(true);
+        };
+
+        cancelButton.onclick = () => {
+            closeModal(false);
+            resolve(false);
+        };
+
+        function closeModal(isConfirmed) {
+            modalContent.classList.add('exit'); 
+            setTimeout(() => {
+                modalContent.classList.remove('exit'); 
+                modal.classList.remove('visible');
+                modal.classList.add('hidden');
+            }, 500);
+        }
+    });
+
+    if (!confirmDelete) return; 
+
+    const actionDetails = {
+        action: "delete_link",
+        link: docId,
+    };
+
+    const data = await performAdminAction(actionDetails);
+    const status = data.status;
+
+    if (status == "True") {
         button.innerHTML = '<i class="fa fa-check"></i>';
         button.classList.add('success');
         setTimeout(() => {
             fetchAndDisplayLinks();
         }, 1000);
-    }).catch(error => {
-        console.error('Error', error);
-    });
+    } else {
+        const error = status.error;
+        console.log(error);
+    }
 }
 
+
 async function deleteUser(email, button) {
-    try {
-        const response = await fetch('/delete-user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: email }), 
-        });
+    const modal = document.getElementById('delete-confirmation-modal');
+    const modalContent = modal.querySelector('.modal-content');
+    const confirmButton = document.getElementById('confirm-delete-btn');
+    const cancelButton = document.getElementById('cancel-delete-btn');
 
-        
-        const result = await response.json();
+    modal.classList.remove('hidden');
+    modal.classList.add('visible');
 
-        if (response.ok) {
-            db.collection('users').doc(email).delete().then(() => {
-                button.innerHTML = '<i class="fa fa-check"></i>';
-                button.classList.add('success');
-                setTimeout(() => {
-                    fetchAndDisplayUsers();
-                }, 1000);
-            }).catch(error => {
-                showNotification(`Error: ${error}`,'error');
-            });
-        } else {
-            showNotification(`Error:${result.error}`,error);
+    const confirmDelete = await new Promise((resolve) => {
+        confirmButton.onclick = () => {
+            closeModal(true);
+            resolve(true);
+        };
+
+        cancelButton.onclick = () => {
+            closeModal(false);
+            resolve(false);
+        };
+
+        function closeModal(isConfirmed) {
+            modalContent.classList.add('exit'); 
+            setTimeout(() => {
+                modalContent.classList.remove('exit'); 
+                modal.classList.remove('visible');
+                modal.classList.add('hidden');
+            }, 500);
         }
-    } catch (error) {
-        showNotification(`Error: ${error}`,'error');
+    });
 
+    if (!confirmDelete) return; 
+    const actionDetails = {
+        action: "delete_user",
+        email: email
+    };
+    
+    const data = await performAdminAction(actionDetails);
+    const status = data.status;
+    if (status == "True") {
+        button.innerHTML = '<i class="fa fa-check"></i>';
+        button.classList.add('success');
+        setTimeout(() => {
+            fetchAndDisplayUsers();
+        }, 1000);
+        
+    }else{
+        const error = data.error;
+        console.log(error);
     }
 }
 
@@ -226,15 +311,16 @@ function getCookie(name) {
 }
 
 async function updateField(collection,document,field,data) {
-    const docRef = db.collection(collection).doc(document); 
-    docRef.update({
-        [field]: data 
-    })
-    .then(() => {    })
-    .catch((error) => {
-        console.error("Error:", error);
-    });
+    const actionDetails = {
+        action: "update_field",
+        collection: collection,
+        doc: document,
+        fieldd: field,
+        dataa: data
+
+    };
     
+    const status = performAdminAction(actionDetails);
 }
 
 async function fetchField(collection,document,field,switchButton) {
@@ -276,40 +362,44 @@ function fetchBannedWords() {
     });
 }
 
-function addBannedWord() {
+async function addBannedWord() {
     const inputField = document.getElementById('banned-word-input');
     const word = inputField.value.trim();
-    if (word) {
-        const docRef = db.collection('general').doc('banned-words');
-        docRef.get().then(doc => {
-            if (doc.exists) {
-                const words = doc.data().words || [];
-                words.push(word); 
-                docRef.update({ words }).then(() => {
-                    inputField.value = ''; 
-                    fetchBannedWords(); 
-                });
-            } else {
-                docRef.set({ words: [word] }).then(() => {
-                    inputField.value = ''; 
-                    fetchBannedWords(); 
-                });
-            }
-        });
+    const actionDetails = {
+        action: "add_word",
+        word: word
+    };
+    
+    const data = await performAdminAction(actionDetails);
+    const status = data.status;
+    if (status == "True") {
+        inputField.value = ''; 
+        fetchBannedWords();
+        
+    }else{
+        const error = status.error;
+        console.log(error);
     }
+
 }
 
-function deleteBannedWord(index) {
-    const docRef = db.collection('general').doc('banned-words');
-    docRef.get().then(doc => {
-        if (doc.exists) {
-            const words = doc.data().words || [];
-            words.splice(index, 1); 
-            docRef.update({ words }).then(() => {
-                fetchBannedWords(); 
-            });
-        }
-    });
+async function deleteBannedWord(index) {
+    console.log(index);
+    const actionDetails = {
+        action: "delete_word",
+        word: index
+    };
+    
+    const data = await performAdminAction(actionDetails);
+    const status = data.status;
+    if (status == "True") {
+        fetchBannedWords();
+        
+    }else{
+        const error = status.error;
+        console.log(error);
+    }
+
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -324,7 +414,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     bannedWordsList.addEventListener('click', (event) => {
         if (event.target.classList.contains('delete-btn')) {
-            const wordId = event.target.getAttribute('data-id');
+            const wordId = event.target.getAttribute('data-index');
+            console.log(wordId);
             deleteBannedWord(wordId);
         }
     });
@@ -333,28 +424,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
     adminOnlySwitch.addEventListener("click", () => {
         if (adminOnlySwitch.classList.contains("active")) {
-            updateField("general","preferences","only-admin-short",false);
-            fetchField("general","preferences","only-admin-short",adminOnlySwitch);
+            updateField("general","preferences","only_admin_short",false);
+            fetchField("general","preferences","only_admin_short",adminOnlySwitch);
 
             
             
         }else{
-            updateField("general","preferences","only-admin-short",true);
-            fetchField("general","preferences","only-admin-short",adminOnlySwitch);
+            updateField("general","preferences","only_admin_short",true);
+            fetchField("general","preferences","only_admin_short",adminOnlySwitch);
         }
         adminOnlySwitch.classList.toggle("active");
     });
 
     loggedOnOnlySwitch.addEventListener("click", () => {
         if (loggedOnOnlySwitch.classList.contains("active")) {
-            updateField("general","preferences","only-loggedon-short",false);
-            fetchField("general","preferences","only-loggedon-short",loggedOnOnlySwitch);
+            updateField("general","preferences","only_loggedon_short",false);
+            fetchField("general","preferences","only_loggedon_short",loggedOnOnlySwitch);
 
             
             
         }else{
-            updateField("general","preferences","only-loggedon-short",true);
-            fetchField("general","preferences","only-loggedon-short",loggedOnOnlySwitch);
+            updateField("general","preferences","only_loggedon_short",true);
+            fetchField("general","preferences","only_loggedon_short",loggedOnOnlySwitch);
         }
         loggedOnOnlySwitch.classList.toggle("active");
     });
@@ -374,6 +465,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     sidebarItems.forEach((item, index) => {
         item.addEventListener('click', () => {
+            if (index === 0) {
+                fetchAndDisplayLinks();
+                
+            }else if(index === 1){
+                fetchAndDisplayUsers();
+            }else if(index === 2){
+                const adminOnlySwitch = document.getElementById("admin-only-short");
+                const loggedOnOnlySwitch = document.getElementById("loggedon-only-short");
+                fetchBannedWords();
+                fetchField("general","preferences","only_admin_short",adminOnlySwitch);
+                fetchField("general","preferences","only_loggedon_short",loggedOnOnlySwitch);
+            }
             sections.forEach(section => section.style.display = 'none');
 
 
