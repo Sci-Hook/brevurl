@@ -100,3 +100,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - The site was made mobile compatible(after a painful process).
+
+
+
+## [Unreleased]
+
+### Added
+- Our Team page added.
+- Added warning box to deletion process like delete links and users.
+
+### Changed
+- The entire accounting system has been rewritten to be JWT-based.
+- Added password controll system to setup.py.
+- Warning windows have been made understandable for users.
+
+
+### Fix:
+- Some bugs fixed in the setup.py.
