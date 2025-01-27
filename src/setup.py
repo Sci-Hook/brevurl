@@ -65,15 +65,20 @@ def main():
         name = "Brevurl"
     domain = input("Please enter the URL address where the server is located (e.g., https://example.com): ")
     port = input("Please enter the port that the server application will use (this port will be used for routing): ")
-    account_available = get_user_input(
-        "Would you like to activate the account system? (y/n): ",
-        valid_responses={'y', 'n'}
-    )
-    account_bool = 1 if account_available == 'y' else 0
-    if account_bool == 1:
-        email = input("Enter the email for the Admin account:")
-        username = input("Enter the username for the Admin account:")
-        password = getpass.getpass("Enter the password for the admin account:")
+
+    email = input("Enter the email for the Admin account:")
+    username = input("Enter the username for the Admin account:")
+    password = getpass.getpass("Enter the password for the admin account:")
+    controll_password = getpass.getpass("Enter the password again:")
+    while True:
+        if(password == controll_password):
+            break
+        else:
+            print("Passwords don't match. Please enter again")
+            password = getpass.getpass("Enter the password for the admin account:")
+            controll_password = getpass.getpass("Enter the password again")
+
+
         
 
     print(Fore.YELLOW + "Editing the brevurl config file..." + Style.RESET_ALL)
@@ -84,7 +89,6 @@ def main():
     brevurl_config.update({
         "name": name,
         "domain": domain,
-        "account_available": account_bool,
         "port": port,
         "firebase_configdst": frconfig_dst
     })
@@ -95,17 +99,17 @@ def main():
         cred = credentials.Certificate(frconfig_dst)
         firebase_admin.initialize_app(cred)
         db = firestore.client()
-        db.collection("urls").document("scihook").set({'original_url': 'https://scihook.org/'}) #create url entry
+        db.collection("urls").document("scihook").set({'original_url': 'https://scihook.org/', 'user' : 'System'}) #create url entry
         db.collection("general").document("preferences").set(
             {
-                'only-admin-short' : false,
-                'only-loggedon-short' : false
+                'only-admin-short' : False,
+                'only-loggedon-short' : False
             }
         )
         db.collection("general").document("blocked-words").set({})
-        if account_bool == 1:
-            firebase_admin.auth.create_user(email = email, password = password)
-            db.collection("users").document(email).set({'username': username,'role':'admin'})
+        
+        firebase_admin.auth.create_user(email = email, password = password)
+        db.collection("users").document(email).set({'username': username,'role':'admin'})
             
         
         
