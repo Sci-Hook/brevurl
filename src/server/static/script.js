@@ -191,7 +191,7 @@ async function create_url_entry(event) {
                 url = `http://${url}`;
             }
 
-            let requestUrl = `${domain}:${port}/shorten?url=${encodeURIComponent(url)}`;
+            let requestUrl = `${domain}/shorten?url=${encodeURIComponent(url)}`;
             if (short) {
                 requestUrl += `&short=${encodeURIComponent(short)}`;
             }

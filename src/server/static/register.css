@@ -80,7 +80,7 @@ h2 {
     color: #e0e0e0;
   }
 }
-input[type=text], input[type=password] {
+input[type=email], input[type=password], input[type=text] {
   flex: 1;
   padding: 10px;
   border: none;
@@ -94,12 +94,12 @@ input[type=text], input[type=password] {
     color: #e0e0e0;
   }
 }
-input[type=text]::placeholder, input[type=password]::placeholder {
+input[type=text]::placeholder, input[type=password]::placeholder, input[type=email]::placeholder {
   color: #000000;
 }
 
 @media (prefers-color-scheme: dark) {
-  input[type=text]::placeholder, input[type=password]::placeholder {
+  input[type=text]::placeholder, input[type=password]::placeholder, input[type=email]::placeholder {
     color: #e0e0e0;
   }
 }
