@@ -22,8 +22,8 @@ window.onload = async function () {
             fetchAndDisplayLinks();
             fetchAndDisplayUsers();
             fetchBannedWords();
-            fetchField("general","preferences","only-admin-short",adminOnlySwitch);
-            fetchField("general","preferences","only-loggedon-short",loggedOnOnlySwitch);
+            fetchField("general","preferences","only_admin_short",adminOnlySwitch);
+            fetchField("general","preferences","only_loggedon_short",loggedOnOnlySwitch);
             }else{
                 window.location.href = "/"
             }
@@ -425,17 +425,17 @@ document.addEventListener('DOMContentLoaded',  function () {
 
     adminOnlySwitch.addEventListener("click", () => {
         if (adminOnlySwitch.classList.contains("active")) {
-            updateField("general","preferences","only-admin-short",false);
+            updateField("general","preferences","only_admin_short",false);
             setTimeout(() => {
-                fetchField("general", "preferences", "only-admin-short", adminOnlySwitch);
+                fetchField("general", "preferences", "only_admin_short", adminOnlySwitch);
             }, 2000);
             
             
             
         }else{
-            updateField("general","preferences","only-admin-short",true);
+            updateField("general","preferences","only_admin_short",true);
             setTimeout(() => {
-                fetchField("general", "preferences", "only-admin-short", adminOnlySwitch);
+                fetchField("general", "preferences", "only_admin_short", adminOnlySwitch);
             }, 2000);
                     }
         adminOnlySwitch.classList.toggle("active");
@@ -443,17 +443,17 @@ document.addEventListener('DOMContentLoaded',  function () {
 
     loggedOnOnlySwitch.addEventListener("click", () => {
         if (loggedOnOnlySwitch.classList.contains("active")) {
-            updateField("general","preferences","only-loggedon-short",false);
+            updateField("general","preferences","only_loggedon_short",false);
             setTimeout(() => {
-                fetchField("general", "preferences", "only-loggedon-short", loggedOnOnlySwitch);
+                fetchField("general", "preferences", "only_loggedon_short", loggedOnOnlySwitch);
             }, 2000);
             
             
             
         }else{
-            updateField("general","preferences","only-loggedon-short",true);
+            updateField("general","preferences","only_loggedon_short",true);
             setTimeout(() => {
-                fetchField("general", "preferences", "only-loggedon-short", loggedOnOnlySwitch);
+                fetchField("general", "preferences", "only_loggedon_short", loggedOnOnlySwitch);
             }, 2000);
                     }
         loggedOnOnlySwitch.classList.toggle("active");
