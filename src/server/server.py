@@ -257,7 +257,7 @@ def get_login_status():
     access_token = request.cookies.get("access_token")
     result = verify_token(access_token)
   
-    if result == True:
+    if True in result:
         decoded = jwt.decode(access_token, SECRET_KEY, algorithms=["HS256"])
         username = decoded["username"]
         email = decoded["email"]
@@ -270,13 +270,12 @@ def get_login_status():
         if result == 401 or result == 403:
             return jsonify({"status": "False"})  
         else:
-            response = make_response(jsonify({"status": "Success"}))
-            response.set_cookie("access_token", result, httponly=True, secure=True)
             decoded = jwt.decode(result, SECRET_KEY, algorithms=["HS256"])
             username = decoded["username"]
             email = decoded["email"]
             role = decoded["role"]
             response = make_response(jsonify({"status": "True", "username": username, "email": email, "role":role}))
+            response.set_cookie("access_token", result, httponly=True, secure=True)
             return response
 
 
@@ -357,7 +356,7 @@ def shorten():
         'user': user
     })
     
-    return jsonify({'short_url': f'{brconfig["domain"]}:{port}/{short_url}'}), 200
+    return jsonify({'short_url': f'{brconfig["domain"]}/{short_url}'}), 200
 
 @app.route('/<short_url>', methods=['GET'])
 def redirect_to_url(short_url):
@@ -389,5 +388,8 @@ def delete_user():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
+#If you use WSGI server delete this part
 if __name__ == '__main__':
-    app.run(debug=False, port=port)
+    app.run(host="0.0.0.0", debug=False, port=port)
+

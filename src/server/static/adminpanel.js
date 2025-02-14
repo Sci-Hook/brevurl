@@ -17,6 +17,8 @@ window.onload = async function () {
             if(role == "admin"){
             usernameDisplay.textContent = username;
             usernameDisplay.style.display = 'inline-block';
+            const adminOnlySwitch = document.getElementById("admin-only-short");
+            const loggedOnOnlySwitch = document.getElementById("loggedon-only-short");
             fetchAndDisplayLinks();
             fetchAndDisplayUsers();
             fetchBannedWords();
@@ -53,8 +55,7 @@ window.onload = async function () {
     const title = document.title;
     document.title = title + site_name;
     headertitle.textContent = site_name;
-    const adminOnlySwitch = document.getElementById("admin-only-short");
-    const loggedOnOnlySwitch = document.getElementById("loggedon-only-short");
+
 
 
 
@@ -106,7 +107,7 @@ async function fetchAndDisplayLinks() {
                     <a href="${data.original_url}" target="_blank">${data.original_url}</a>
                 </div>
                 <div class="button-container">
-                    <button class="copy-button" onclick="copyLink('${domain}:${port}/${doc.id}',this)">
+                    <button class="copy-button" onclick="copyLink('${domain}/${doc.id}',this)">
                         <i class="fa fa-copy"></i>
                     </button>
                     <button class="delete-button" onclick="deleteLink('${doc.id}', this)">
@@ -402,7 +403,7 @@ async function deleteBannedWord(index) {
 
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded',  function () {
     const sidebarItems = document.querySelectorAll('.sidebar ul li');
     const sections = document.querySelectorAll('.section');
     const adminOnlySwitch = document.getElementById("admin-only-short");
@@ -425,28 +426,36 @@ document.addEventListener('DOMContentLoaded', function () {
     adminOnlySwitch.addEventListener("click", () => {
         if (adminOnlySwitch.classList.contains("active")) {
             updateField("general","preferences","only_admin_short",false);
-            fetchField("general","preferences","only_admin_short",adminOnlySwitch);
-
+            setTimeout(() => {
+                fetchField("general", "preferences", "only_admin_short", adminOnlySwitch);
+            }, 2000);
+            
             
             
         }else{
             updateField("general","preferences","only_admin_short",true);
-            fetchField("general","preferences","only_admin_short",adminOnlySwitch);
-        }
+            setTimeout(() => {
+                fetchField("general", "preferences", "only_admin_short", adminOnlySwitch);
+            }, 2000);
+                    }
         adminOnlySwitch.classList.toggle("active");
     });
 
     loggedOnOnlySwitch.addEventListener("click", () => {
         if (loggedOnOnlySwitch.classList.contains("active")) {
             updateField("general","preferences","only_loggedon_short",false);
-            fetchField("general","preferences","only_loggedon_short",loggedOnOnlySwitch);
-
+            setTimeout(() => {
+                fetchField("general", "preferences", "only_loggedon_short", loggedOnOnlySwitch);
+            }, 2000);
+            
             
             
         }else{
             updateField("general","preferences","only_loggedon_short",true);
-            fetchField("general","preferences","only_loggedon_short",loggedOnOnlySwitch);
-        }
+            setTimeout(() => {
+                fetchField("general", "preferences", "only_loggedon_short", loggedOnOnlySwitch);
+            }, 2000);
+                    }
         loggedOnOnlySwitch.classList.toggle("active");
     });
 

@@ -98,7 +98,7 @@ async function fetchAndDisplayLinks() {
                         <a href="${data.original_url}" target="_blank">${data.original_url}</a>
                     </div>
                     <div class="button-container">
-                            <button class="copy-button" onclick="copyLink('${domain}:${port}/${doc.id}',this)">
+                            <button class="copy-button" onclick="copyLink('${domain}/${doc.id}',this)">
                                 <i class="fa fa-copy"></i>
                             </button>
                             <button class="delete-button" onclick="deleteLink('${doc.id}', this)">

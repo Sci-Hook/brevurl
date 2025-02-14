@@ -84,7 +84,7 @@ h2 {
   }
 }
 
-input[type=text],
+input[type=email],
 input[type=password] {
   flex: 1;
   padding: 10px;
@@ -94,17 +94,17 @@ input[type=password] {
   color: #000000;
 }
 @media (prefers-color-scheme: dark) {
-  input[type=text],
+  input[type=email],
   input[type=password] {
     color: #e0e0e0;
   }
 }
-input[type=text]::placeholder,
+input[type=email]::placeholder,
 input[type=password]::placeholder {
   color: #000000;
 }
 @media (prefers-color-scheme: dark) {
-  input[type=text]::placeholder,
+  input[type=email]::placeholder,
   input[type=password]::placeholder {
     color: #e0e0e0;
   }
