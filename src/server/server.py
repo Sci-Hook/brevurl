@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, redirect, render_template, make_response
+from flask import Flask, request, jsonify, redirect, url_for, render_template, make_response
 from flask_cors import CORS
 import hashlib
 import firebase_admin
@@ -8,6 +8,8 @@ import os
 import jwt
 import secrets
 import datetime
+import requests
+import logging
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 config_path = os.path.join(current_dir, '..', '..', 'brevurl_config.json')
@@ -24,6 +26,12 @@ with open(config_web_path, 'r') as file:
 app = Flask(__name__)
 CORS(app)
 port = brconfig["port"]
+
+log_level = False
+
+if log_level == False:
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR)
 
 # Start Firebase
 cred = credentials.Certificate(brconfig["firebase_configdst"])
@@ -364,10 +372,26 @@ def redirect_to_url(short_url):
     doc = doc_ref.get()
     
     if not doc.exists:
-        return jsonify({'error': 'URL not found'}), 404
-    
+       return redirect(url_for('index'))    
     original_url = doc.to_dict().get('original_url')
     return redirect(original_url)
+
+@app.route('/check-url', methods=['GET'])
+def check_site():
+    url = request.args.get('url')
+    
+    if not url:
+        return jsonify({"error": "URL is required"}), 400
+    
+    if not url.startswith(("http://", "https://")):
+        url = "https://" + url  
+
+    try:
+        response = requests.head(url, timeout=5) 
+        return jsonify({"exists": True})  
+        
+    except requests.RequestException:
+        return jsonify({"exists": False})
 
 
 @app.route('/delete-user', methods=['POST'])

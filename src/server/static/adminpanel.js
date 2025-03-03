@@ -2,43 +2,47 @@ window.onload = async function () {
     const headertitle = document.getElementById('header-title');
 
     fetch('/getloginstatus')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network err');
-        }
-        return response.json();  
-    })
-    .then(data => {
-        const login_status = data.status;
-        const username = data.username;
-        const role = data.role;
-        const usernameDisplay = document.getElementById('user-display');
-        if (login_status === "True") {
-            if(role == "admin"){
-            usernameDisplay.textContent = username;
-            usernameDisplay.style.display = 'inline-block';
-            const adminOnlySwitch = document.getElementById("admin-only-short");
-            const loggedOnOnlySwitch = document.getElementById("loggedon-only-short");
-            fetchAndDisplayLinks();
-            fetchAndDisplayUsers();
-            fetchBannedWords();
-            fetchField("general","preferences","only_admin_short",adminOnlySwitch);
-            fetchField("general","preferences","only_loggedon_short",loggedOnOnlySwitch);
-            }else{
-                window.location.href = "/"
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network err');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const login_status = data.status;
+            const username = data.username;
+            const role = data.role;
+            const usernameDisplay = document.getElementById('user-display');
+            if (login_status === "True") {
+                if (role == "admin") {
+                    usernameDisplay.textContent = username;
+                    usernameDisplay.style.display = 'inline-block';
+                    const adminOnlySwitch = document.getElementById("admin-only-short");
+                    const loggedOnOnlySwitch = document.getElementById("loggedon-only-short");
+                    const checkUrlSwitch = document.getElementById("check-url");
+                    fetchAndDisplayLinks();
+                    fetchAndDisplayUsers();
+                    fetchBannedWords();
+
+                    fetchField("general", "preferences", "only_admin_short", adminOnlySwitch);
+                    fetchField("general", "preferences", "only_loggedon_short", loggedOnOnlySwitch);
+                    fetchField("general", "preferences", "check_url", checkUrlSwitch);
+
+                } else {
+                    window.location.href = "/"
+                }
+
+
+            } else {
+                window.location.href = "/login";
             }
 
-
-        }else{
+            usernameDisplay.addEventListener('click', toggleMenu);
+        })
+        .catch(error => {
+            console.error('Error:', error);
             window.location.href = "/login";
-        }
-
-        usernameDisplay.addEventListener('click', toggleMenu);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        window.location.href = "/login";  
-    });
+        });
 
 
 
@@ -55,24 +59,24 @@ window.onload = async function () {
     const title = document.title;
     document.title = title + site_name;
     headertitle.textContent = site_name;
-
-
-
-
     
+
+
+
+
 }
 
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const content = document.querySelector('.content');
 
-   
+
     if (sidebar.classList.contains('hidden')) {
         sidebar.classList.remove('hidden');
-        content.style.marginLeft = '250px'; 
+        content.style.marginLeft = '250px';
     } else {
         sidebar.classList.add('hidden');
-        content.style.marginLeft = '0'; 
+        content.style.marginLeft = '0';
     }
 }
 
@@ -128,14 +132,14 @@ async function fetchAndDisplayUsers() {
 
     try {
         const usersSection = document.getElementById('users');
-        usersSection.innerHTML = ''; 
+        usersSection.innerHTML = '';
 
         const snapshot = await db.collection('users').get();
         snapshot.forEach(doc => {
             const data = doc.data();
 
             const userElement = document.createElement('div');
-            userElement.classList.add('link-item'); 
+            userElement.classList.add('link-item');
 
 
             userElement.innerHTML = `
@@ -159,13 +163,13 @@ async function fetchAndDisplayUsers() {
 }
 
 
-async function performAdminAction(actionDetails){
+async function performAdminAction(actionDetails) {
     const response = await fetch('/admin-action', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(actionDetails) 
+        body: JSON.stringify(actionDetails)
     });
 
     const data = await response.json();
@@ -193,16 +197,16 @@ async function deleteLink(docId, button) {
         };
 
         function closeModal(isConfirmed) {
-            modalContent.classList.add('exit'); 
+            modalContent.classList.add('exit');
             setTimeout(() => {
-                modalContent.classList.remove('exit'); 
+                modalContent.classList.remove('exit');
                 modal.classList.remove('visible');
                 modal.classList.add('hidden');
             }, 500);
         }
     });
 
-    if (!confirmDelete) return; 
+    if (!confirmDelete) return;
 
     const actionDetails = {
         action: "delete_link",
@@ -246,21 +250,21 @@ async function deleteUser(email, button) {
         };
 
         function closeModal(isConfirmed) {
-            modalContent.classList.add('exit'); 
+            modalContent.classList.add('exit');
             setTimeout(() => {
-                modalContent.classList.remove('exit'); 
+                modalContent.classList.remove('exit');
                 modal.classList.remove('visible');
                 modal.classList.add('hidden');
             }, 500);
         }
     });
 
-    if (!confirmDelete) return; 
+    if (!confirmDelete) return;
     const actionDetails = {
         action: "delete_user",
         email: email
     };
-    
+
     const data = await performAdminAction(actionDetails);
     const status = data.status;
     if (status == "True") {
@@ -269,8 +273,8 @@ async function deleteUser(email, button) {
         setTimeout(() => {
             fetchAndDisplayUsers();
         }, 1000);
-        
-    }else{
+
+    } else {
         const error = data.error;
         console.log(error);
     }
@@ -311,7 +315,7 @@ function getCookie(name) {
     return null;
 }
 
-async function updateField(collection,document,field,data) {
+async function updateField(collection, document, field, data) {
     const actionDetails = {
         action: "update_field",
         collection: collection,
@@ -320,33 +324,33 @@ async function updateField(collection,document,field,data) {
         dataa: data
 
     };
-    
+
     const status = performAdminAction(actionDetails);
 }
 
-async function fetchField(collection,document,field,switchButton) {
-    const docRef = db.collection(collection).doc(document); 
+async function fetchField(collection, document, field, switchButton) {
+    const docRef = db.collection(collection).doc(document);
 
     try {
         const doc = await docRef.get();
 
-        
+
         if (doc.exists && doc.data()[field] === true) {
-          
+
             switchButton.classList.add("active");
         } else {
         }
     } catch (error) {
         console.error("Error:", error);
     }
-    
+
 }
 function fetchBannedWords() {
     const bannedWordsList = document.getElementById('banned-words-list');
     db.collection('general').doc('banned-words').get().then(doc => {
         if (doc.exists) {
             const words = doc.data().words || [];
-            bannedWordsList.innerHTML = ''; 
+            bannedWordsList.innerHTML = '';
             words.forEach((word, index) => {
                 const li = document.createElement('li');
                 li.textContent = word;
@@ -354,7 +358,7 @@ function fetchBannedWords() {
                 const deleteBtn = document.createElement('button');
                 deleteBtn.textContent = '✖';
                 deleteBtn.className = 'delete-btn';
-                deleteBtn.setAttribute('data-index', index); 
+                deleteBtn.setAttribute('data-index', index);
 
                 li.appendChild(deleteBtn);
                 bannedWordsList.appendChild(li);
@@ -370,14 +374,14 @@ async function addBannedWord() {
         action: "add_word",
         word: word
     };
-    
+
     const data = await performAdminAction(actionDetails);
     const status = data.status;
     if (status == "True") {
-        inputField.value = ''; 
+        inputField.value = '';
         fetchBannedWords();
-        
-    }else{
+
+    } else {
         const error = status.error;
         console.log(error);
     }
@@ -390,24 +394,25 @@ async function deleteBannedWord(index) {
         action: "delete_word",
         word: index
     };
-    
+
     const data = await performAdminAction(actionDetails);
     const status = data.status;
     if (status == "True") {
         fetchBannedWords();
-        
-    }else{
+
+    } else {
         const error = status.error;
         console.log(error);
     }
 
 }
 
-document.addEventListener('DOMContentLoaded',  function () {
+document.addEventListener('DOMContentLoaded', function () {
     const sidebarItems = document.querySelectorAll('.sidebar ul li');
     const sections = document.querySelectorAll('.section');
     const adminOnlySwitch = document.getElementById("admin-only-short");
     const loggedOnOnlySwitch = document.getElementById("loggedon-only-short");
+    const checkUrlSwitch = document.getElementById("check-url");
     const addButton = document.getElementById('add-banned-word-btn');
     const bannedWordsList = document.getElementById('banned-words-list');
 
@@ -425,20 +430,40 @@ document.addEventListener('DOMContentLoaded',  function () {
 
     adminOnlySwitch.addEventListener("click", () => {
         if (adminOnlySwitch.classList.contains("active")) {
-            updateField("general","preferences","only_admin_short",false);
+            updateField("general", "preferences", "only_admin_short", false);
             setTimeout(() => {
-                fetchField("general", "preferences", "only_admin_short", adminOnlySwitch);
+                fetchField("general", "preferences", "only_admin_short", checkUrlSwitch);
             }, 2000);
-            
-            
-            
-        }else{
-            updateField("general","preferences","only_admin_short",true);
+
+
+        } else {
+            updateField("general", "preferences", "only_admin_short", true);
             setTimeout(() => {
-                fetchField("general", "preferences", "only_admin_short", adminOnlySwitch);
-            }, 2000);
-                    }
+                fetchField("general", "preferences", "only_admin_short", checkUrlSwitch);
+            }, 2000);        }
         adminOnlySwitch.classList.toggle("active");
+    });
+    
+    
+    
+    
+    
+    checkUrlSwitch.addEventListener("click", () => {
+        if (checkUrlSwitch.classList.contains("active")) {
+            updateField("general", "preferences", "check_url", false);
+            setTimeout(() => {
+                fetchField("general", "preferences", "check_url", checkUrlSwitch);
+            }, 2000);
+
+
+
+        } else {
+            updateField("general", "preferences", "check_url", true);
+            setTimeout(() => {
+                fetchField("general", "preferences", "check_url", checkUrlSwitch);
+            }, 2000);
+        }
+        checkUrlSwitch.classList.toggle("active");
     });
 
     loggedOnOnlySwitch.addEventListener("click", () => {
@@ -447,8 +472,8 @@ document.addEventListener('DOMContentLoaded',  function () {
             setTimeout(() => {
                 fetchField("general", "preferences", "only_loggedon_short", loggedOnOnlySwitch);
             }, 2000);
-            
-            
+
+
             
         }else{
             updateField("general","preferences","only_loggedon_short",true);
@@ -460,7 +485,7 @@ document.addEventListener('DOMContentLoaded',  function () {
     });
 
 
-  
+
 
 
     sections.forEach((section, index) => {
@@ -476,15 +501,20 @@ document.addEventListener('DOMContentLoaded',  function () {
         item.addEventListener('click', () => {
             if (index === 0) {
                 fetchAndDisplayLinks();
-                
-            }else if(index === 1){
+
+            } else if (index === 1) {
                 fetchAndDisplayUsers();
-            }else if(index === 2){
+            } else if (index === 2) {
                 const adminOnlySwitch = document.getElementById("admin-only-short");
                 const loggedOnOnlySwitch = document.getElementById("loggedon-only-short");
+                const checkUrlSwitch = document.getElementById("check-url");
+
                 fetchBannedWords();
-                fetchField("general","preferences","only_admin_short",adminOnlySwitch);
-                fetchField("general","preferences","only_loggedon_short",loggedOnOnlySwitch);
+                fetchField("general", "preferences", "only_admin_short", adminOnlySwitch);
+                fetchField("general", "preferences", "only_loggedon_short", loggedOnOnlySwitch);
+                fetchField("general", "preferences", "check_url", checkUrlSwitch);
+
+
             }
             sections.forEach(section => section.style.display = 'none');
 
