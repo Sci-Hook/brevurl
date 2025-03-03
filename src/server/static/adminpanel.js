@@ -432,14 +432,14 @@ document.addEventListener('DOMContentLoaded', function () {
         if (adminOnlySwitch.classList.contains("active")) {
             updateField("general", "preferences", "only_admin_short", false);
             setTimeout(() => {
-                fetchField("general", "preferences", "only_admin_short", checkUrlSwitch);
+                fetchField("general", "preferences", "only_admin_short", adminOnlySwitch);
             }, 2000);
 
 
         } else {
             updateField("general", "preferences", "only_admin_short", true);
             setTimeout(() => {
-                fetchField("general", "preferences", "only_admin_short", checkUrlSwitch);
+                fetchField("general", "preferences", "only_admin_short", adminOnlySwitch);
             }, 2000);        }
         adminOnlySwitch.classList.toggle("active");
     });
