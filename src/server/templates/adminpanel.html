@@ -26,7 +26,7 @@
             <button id="sidebar-toggle" class="sidebar-toggle" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            <p class="header-title" id="header-title" onclick="window.location.href = '/';">Brevurl</p>
+            <a class="header-title" id="header-title" onclick="window.location.href = '/';">Brevurl</a>
             <div class="user">
                 <span id="user-display" class="username-display" style="display: none;"></span>
                 <div id="user-menu" class="user-menu hidden">
@@ -103,7 +103,10 @@
                         <span>Prevent non-logged in users from shortening URLs</span>
                         <button class="switch" id="loggedon-only-short"></button>
                     </div>
-
+                    <div class="switch-container">
+                        <span>Check if URLs exist. URLs with negative return are blocked.</span>
+                        <button class="switch" id="check-url"></button>
+                    </div>
                     <div class="banned-words">
                         <h2>Banned Words</h2>
                         <ul id="banned-words-list" class="banned-words-list"></ul>
@@ -129,10 +132,10 @@
             </div>
         </div>
     </div>
-    
+
 
     <footer>
-        Scihook
+        Sci-Hook
         <i class="scicon scicon-scihook"></i>
     </footer>
 </body>

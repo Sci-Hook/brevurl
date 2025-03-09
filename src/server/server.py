@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, redirect, render_template, make_response
+from flask import Flask, request, jsonify, redirect, url_for, render_template, make_response
 from flask_cors import CORS
 import hashlib
 import firebase_admin
@@ -8,6 +8,8 @@ import os
 import jwt
 import secrets
 import datetime
+import requests
+import logging
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 config_path = os.path.join(current_dir, '..', '..', 'brevurl_config.json')
@@ -24,6 +26,12 @@ with open(config_web_path, 'r') as file:
 app = Flask(__name__)
 CORS(app)
 port = brconfig["port"]
+
+log_level = False
+
+if log_level == False:
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR)
 
 # Start Firebase
 cred = credentials.Certificate(brconfig["firebase_configdst"])
@@ -257,7 +265,7 @@ def get_login_status():
     access_token = request.cookies.get("access_token")
     result = verify_token(access_token)
   
-    if result == True:
+    if True in result:
         decoded = jwt.decode(access_token, SECRET_KEY, algorithms=["HS256"])
         username = decoded["username"]
         email = decoded["email"]
@@ -270,13 +278,12 @@ def get_login_status():
         if result == 401 or result == 403:
             return jsonify({"status": "False"})  
         else:
-            response = make_response(jsonify({"status": "Success"}))
-            response.set_cookie("access_token", result, httponly=True, secure=True)
             decoded = jwt.decode(result, SECRET_KEY, algorithms=["HS256"])
             username = decoded["username"]
             email = decoded["email"]
             role = decoded["role"]
             response = make_response(jsonify({"status": "True", "username": username, "email": email, "role":role}))
+            response.set_cookie("access_token", result, httponly=True, secure=True)
             return response
 
 
@@ -357,7 +364,7 @@ def shorten():
         'user': user
     })
     
-    return jsonify({'short_url': f'{brconfig["domain"]}:{port}/{short_url}'}), 200
+    return jsonify({'short_url': f'{brconfig["domain"]}/{short_url}'}), 200
 
 @app.route('/<short_url>', methods=['GET'])
 def redirect_to_url(short_url):
@@ -365,10 +372,26 @@ def redirect_to_url(short_url):
     doc = doc_ref.get()
     
     if not doc.exists:
-        return jsonify({'error': 'URL not found'}), 404
-    
+       return redirect(url_for('index'))    
     original_url = doc.to_dict().get('original_url')
     return redirect(original_url)
+
+@app.route('/check-url', methods=['GET'])
+def check_site():
+    url = request.args.get('url')
+    
+    if not url:
+        return jsonify({"error": "URL is required"}), 400
+    
+    if not url.startswith(("http://", "https://")):
+        url = "https://" + url  
+
+    try:
+        response = requests.head(url, timeout=5) 
+        return jsonify({"exists": True})  
+        
+    except requests.RequestException:
+        return jsonify({"exists": False})
 
 
 @app.route('/delete-user', methods=['POST'])
@@ -389,5 +412,8 @@ def delete_user():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
+#If you use WSGI server delete this part
 if __name__ == '__main__':
-    app.run(debug=False, port=port)
+    app.run(host="0.0.0.0", debug=False, port=port)
+

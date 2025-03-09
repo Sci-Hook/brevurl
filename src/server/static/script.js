@@ -23,14 +23,14 @@ window.onload = async function () {
     document.title = site_name;
     h1Element.textContent = site_name;
     headertitle.textContent = site_name;
-    
+
 
     fetch('/getloginstatus')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network err');
             }
-            return response.json();  
+            return response.json();
         })
         .then(data => {
             const login_status = data.status;
@@ -56,7 +56,7 @@ window.onload = async function () {
             userDisplay.addEventListener('click', toggleMenu);
         })
         .catch(error => {
-            console.error('Hata:', error);  
+            console.error('Hata:', error);
         });
 
 };
@@ -69,16 +69,12 @@ async function fetchField(collection, document, field) {
 
     try {
         const doc = await docRef.get();
-
-
         if (doc.exists && doc.data()[field] === true) {
-
             return true;
         } else {
             return false;
         }
     } catch (error) {
-
         console.error("Error:", error);
         return true;
     }
@@ -121,13 +117,15 @@ async function create_url_entry(event) {
     event.preventDefault();
 
     const usr_response = await fetch('/getloginstatus');
-    if(!usr_response.ok){
+    if (!usr_response.ok) {
         throw new Error('Network response was not ok');
     }
-    
+
     const usrdata = await usr_response.json();
     const loggingRestriction = await fetchField("general", "preferences", "only_loggedon_short");
     const adminRestriction = await fetchField("general", "preferences", "only_admin_short");
+    const checkUrl = await fetchField("general", "preferences", "check_url");
+
     const urlInput = document.getElementById('url');
     const shortInput = document.getElementById('short');
     const username = usrdata.username;
@@ -162,11 +160,24 @@ async function create_url_entry(event) {
 
     if (access === true) {
         const shortInputValue = shortInput.value.toLowerCase();
-    
+
         if (banned_words.some(word => shortInputValue.includes(word))) {
             if (role !== 'admin') {
                 access = false;
                 showNotification("Short name prohibited", "error");
+            }
+        }
+    }
+    if (access === true) {
+        if (checkUrl == true) {
+            if (role !== 'admin') {
+                let url = urlInput.value;
+                const check_site = await fetch(`/check-url?url=${encodeURIComponent(url)}`);
+                const data = await check_site.json();
+                if (data.exists == false) {
+                    access = false;
+                    showNotification("URL not found", "error");
+                }
             }
         }
     }
@@ -185,13 +196,13 @@ async function create_url_entry(event) {
 
 
             let url = urlInput.value;
-            let short = shortInput.value || null;
+            let short = shortInput.value.toLowerCase().replace(/\s/g, "") || null;
 
             if (!url.startsWith('http://') && !url.startsWith('https://')) {
                 url = `http://${url}`;
             }
 
-            let requestUrl = `${domain}:${port}/shorten?url=${encodeURIComponent(url)}`;
+            let requestUrl = `${domain}/shorten?url=${encodeURIComponent(url)}`;
             if (short) {
                 requestUrl += `&short=${encodeURIComponent(short)}`;
             }

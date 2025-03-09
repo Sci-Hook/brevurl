@@ -117,3 +117,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fix:
 - Some bugs fixed in the setup.py.
+
+
+## [Unreleased]
+
+### Changed
+- Made suitable for port-free use.
+
+### Fix
+- Fixed the bug that caused the email not to be received correctly on mobile.
